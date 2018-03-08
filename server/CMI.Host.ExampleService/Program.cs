@@ -2,9 +2,9 @@
 
 namespace CMI.Host.ExampleServiceA
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             HostFactory.Run(x =>
             {
