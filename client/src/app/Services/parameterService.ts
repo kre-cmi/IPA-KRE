@@ -2,10 +2,12 @@ import {Injectable} from '@angular/core';
 import {HttpService} from './httpService';
 
 @Injectable()
-export class NewsService {
+export class ParameterService {
 	constructor(private _http: HttpService) {
 	}
-
+	public async getAllParameters() {
+		let url = this._createBaseUrl() + '/GetAllParameters';
+	}
 	public async getAllNewsForManagementClient(): Promise<string[]> {
 		let url = this._createBaseUrl() + '/GetAllNewsForManagementClient';
 		return await this._http.get<string[]>(url, this._http.noCaching).toPromise();

@@ -18,7 +18,7 @@ namespace CMI.Host.ExampleServiceA
 
                 x.SetDescription("The example service is used to mock a running service in the live environement.");
                 x.SetDisplayName("CMI Viaduc Example Service");
-                x.SetServiceName("CMIExampleService");
+                x.SetServiceName("CMIExampleServiceA");
             });
         }
     }

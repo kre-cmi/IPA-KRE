@@ -70,8 +70,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExampleParameterA.cs" />
-    <Compile Include="ExampleServiceA.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -80,9 +78,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CMI.Parameter\CMI.Parameter.csproj">
-      <Project>{a0534a1a-ba6d-426d-a857-05ec6038abd2}</Project>
-      <Name>CMI.Parameter</Name>
+    <ProjectReference Include="..\CMI.Manager.ExampleServiceA\CMI.Manager.ExampleServiceA.csproj">
+      <Project>{93cf23a3-a55a-4cc8-baeb-40e30bd2a760}</Project>
+      <Name>CMI.Manager.ExampleServiceA</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

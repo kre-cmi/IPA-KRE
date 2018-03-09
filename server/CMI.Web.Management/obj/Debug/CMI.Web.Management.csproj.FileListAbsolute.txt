@@ -174,3 +174,5 @@ C:\Developement\IPA-KRE\server\CMI.Web.Management\obj\Debug\CMI.Web.Management.c
 C:\Developement\IPA-KRE\server\CMI.Web.Management\obj\Debug\CMI.Web.Management.csproj.CoreCompileInputs.cache
 C:\Developement\IPA-KRE\server\CMI.Web.Management\obj\Debug\CMI.Web.Management.dll
 C:\Developement\IPA-KRE\server\CMI.Web.Management\obj\Debug\CMI.Web.Management.pdb
+C:\Developement\IPA-KRE\server\CMI.Web.Management\bin\CMI.Contract.Parameter.dll
+C:\Developement\IPA-KRE\server\CMI.Web.Management\bin\CMI.Contract.Parameter.pdb
