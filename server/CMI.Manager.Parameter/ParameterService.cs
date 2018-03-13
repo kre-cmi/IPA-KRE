@@ -17,6 +17,7 @@ namespace CMI.Manager.Parameter
                     ec.Consumer(() => new ParameterRequestConsumer());
                 });
             });
+            
             ParameterBus.Start();
             do
             {
@@ -27,7 +28,7 @@ namespace CMI.Manager.Parameter
         public void PullSettings()
         {
             ParameterBus.Publish(new ParameterEvent {Type = "ParameterEvent"});
-            Thread.Sleep(5000);
+            Thread.Sleep(10000);
         }
         public void Stop()
         {

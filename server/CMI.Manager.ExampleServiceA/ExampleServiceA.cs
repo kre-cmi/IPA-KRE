@@ -11,7 +11,7 @@ namespace CMI.Manager.ExampleServiceA
         {
             ParameterBus = BusConfigurator.ConfigureBus((cfg, host) =>
             {
-                cfg.ReceiveEndpoint(host, "GetAllParameters", ep =>
+                cfg.ReceiveEndpoint(host, "GetAllParametersA", ep =>
                 {
                     ep.Handler<ParameterEvent>(context =>
                     {

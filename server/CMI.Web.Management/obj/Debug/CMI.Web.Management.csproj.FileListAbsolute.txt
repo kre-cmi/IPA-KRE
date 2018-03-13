@@ -129,6 +129,7 @@ C:\Developement\IPA-KRE\server\CMI.Web.Management\bin\CMI.Web.Management.dll.con
 C:\Developement\IPA-KRE\server\CMI.Web.Management\bin\CMI.Web.Management.dll
 C:\Developement\IPA-KRE\server\CMI.Web.Management\bin\CMI.Web.Management.pdb
 C:\Developement\IPA-KRE\server\CMI.Web.Management\bin\Antlr3.Runtime.dll
+C:\Developement\IPA-KRE\server\CMI.Web.Management\bin\CMI.Contract.Parameter.dll
 C:\Developement\IPA-KRE\server\CMI.Web.Management\bin\GreenPipes.dll
 C:\Developement\IPA-KRE\server\CMI.Web.Management\bin\MassTransit.dll
 C:\Developement\IPA-KRE\server\CMI.Web.Management\bin\MassTransit.RabbitMqTransport.dll
@@ -150,6 +151,8 @@ C:\Developement\IPA-KRE\server\CMI.Web.Management\bin\System.Web.WebPages.Deploy
 C:\Developement\IPA-KRE\server\CMI.Web.Management\bin\System.Web.WebPages.dll
 C:\Developement\IPA-KRE\server\CMI.Web.Management\bin\System.Web.WebPages.Razor.dll
 C:\Developement\IPA-KRE\server\CMI.Web.Management\bin\WebGrease.dll
+C:\Developement\IPA-KRE\server\CMI.Web.Management\bin\CMI.Contract.Parameter.pdb
+C:\Developement\IPA-KRE\server\CMI.Web.Management\bin\CMI.Contract.Parameter.dll.config
 C:\Developement\IPA-KRE\server\CMI.Web.Management\bin\Antlr3.Runtime.pdb
 C:\Developement\IPA-KRE\server\CMI.Web.Management\bin\GreenPipes.xml
 C:\Developement\IPA-KRE\server\CMI.Web.Management\bin\MassTransit.xml
@@ -174,5 +177,3 @@ C:\Developement\IPA-KRE\server\CMI.Web.Management\obj\Debug\CMI.Web.Management.c
 C:\Developement\IPA-KRE\server\CMI.Web.Management\obj\Debug\CMI.Web.Management.csproj.CoreCompileInputs.cache
 C:\Developement\IPA-KRE\server\CMI.Web.Management\obj\Debug\CMI.Web.Management.dll
 C:\Developement\IPA-KRE\server\CMI.Web.Management\obj\Debug\CMI.Web.Management.pdb
-C:\Developement\IPA-KRE\server\CMI.Web.Management\bin\CMI.Contract.Parameter.dll
-C:\Developement\IPA-KRE\server\CMI.Web.Management\bin\CMI.Contract.Parameter.pdb

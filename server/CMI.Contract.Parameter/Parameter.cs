@@ -4,12 +4,23 @@ using System.Reflection.Emit;
 
 namespace CMI.Contract.Parameter
 {
-    public class Parameter
+    public abstract class AbstractParameter
     {
-        public List<string> GetParameter()
-        {
-            var settings = new List<string>();
-            return this.GetType().GetMembers().Select(m => m.Name).ToList();
-        }
+        public string Name { get; set; }
+        public string Type { get; set; }
+        public string Description { get; set; }
+    }
+
+    public class SimpleParameter : AbstractParameter
+    {
+        public string Value { get; set; }
+        public string Default { get; set; }
+        public string RegexValidation { get; set; }
+        public bool? Mandatory { get; set; }
+    }
+
+    public class ComplecParameter : AbstractParameter
+    {
+        public List<SimpleParameter> Parameters { get; set; } = new List<SimpleParameter>();
     }
 }
