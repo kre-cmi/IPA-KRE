@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using CMI.Contract.Parameter;
 using MassTransit;
 
@@ -21,8 +18,17 @@ namespace CMI.Manager.Parameter
                 });
             });
             ParameterBus.Start();
+            do
+            {
+                PullSettings();
+            } while (true);
         }
 
+        public void PullSettings()
+        {
+            ParameterBus.Publish(new ParameterEvent {Type = "ParameterEvent"});
+            Thread.Sleep(5000);
+        }
         public void Stop()
         {
             ParameterBus.Stop();

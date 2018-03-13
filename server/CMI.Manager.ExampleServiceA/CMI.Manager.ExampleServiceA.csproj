@@ -72,5 +72,11 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CMI.Contract.Parameter\CMI.Contract.Parameter.csproj">
+      <Project>{0D697B1B-2B20-4E87-8F16-37B9C1C4DC7B}</Project>
+      <Name>CMI.Contract.Parameter</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

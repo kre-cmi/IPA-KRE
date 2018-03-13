@@ -23,7 +23,7 @@ namespace CMI.Host.Parameter
                 x.RunAsLocalSystem();
 
                 x.SetDescription("The example service is used to mock a running service in the live environement.");
-                x.SetDisplayName("CMI Viaduc Example Service");
+                x.SetDisplayName("CMI Viaduc Parameter Service");
                 x.SetServiceName("CMIParameterService");
             });
         }

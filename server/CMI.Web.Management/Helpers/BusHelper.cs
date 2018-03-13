@@ -13,10 +13,7 @@ namespace CMI.Web.Management.Helpers
         {
             ParameterBus = BusConfigurator.ConfigureBus((cfg, host) =>
             {
-                /*cfg.ReceiveEndpoint(host, ec =>
-                {
-                    ec.Consumer(() => new ParameterResponseConsumer());
-                });*/
+                
             });
             ParameterBus.Start();
         }

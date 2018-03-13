@@ -20,3 +20,5 @@ C:\Developement\IPA-KRE\server\CMI.Manager.ExampleServiceA\bin\Debug\NewId.xml
 C:\Developement\IPA-KRE\server\CMI.Manager.ExampleServiceA\bin\Debug\Newtonsoft.Json.xml
 C:\Developement\IPA-KRE\server\CMI.Manager.ExampleServiceA\bin\Debug\Newtonsoft.Json.Bson.xml
 C:\Developement\IPA-KRE\server\CMI.Manager.ExampleServiceA\bin\Debug\RabbitMQ.Client.xml
+C:\Developement\IPA-KRE\server\CMI.Manager.ExampleServiceA\bin\Debug\CMI.Contract.Parameter.dll
+C:\Developement\IPA-KRE\server\CMI.Manager.ExampleServiceA\bin\Debug\CMI.Contract.Parameter.pdb

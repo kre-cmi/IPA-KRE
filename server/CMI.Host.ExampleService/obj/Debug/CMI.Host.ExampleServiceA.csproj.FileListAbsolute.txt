@@ -34,3 +34,5 @@ C:\Developement\IPA-KRE\server\CMI.Host.ExampleService\obj\Debug\CMI.Host.Exampl
 C:\Developement\IPA-KRE\server\CMI.Host.ExampleService\obj\Debug\CMI.Host.ExampleServiceA.pdb
 C:\Developement\IPA-KRE\server\CMI.Host.ExampleService\bin\Debug\CMI.Manager.ExampleServiceA.dll
 C:\Developement\IPA-KRE\server\CMI.Host.ExampleService\bin\Debug\CMI.Manager.ExampleServiceA.pdb
+C:\Developement\IPA-KRE\server\CMI.Host.ExampleService\bin\Debug\CMI.Contract.Parameter.dll
+C:\Developement\IPA-KRE\server\CMI.Host.ExampleService\bin\Debug\CMI.Contract.Parameter.pdb
