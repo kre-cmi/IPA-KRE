@@ -12,6 +12,7 @@ import {LoaderComponent} from './ui/loader/loader.component';
 import {SpinnerComponent} from './ui/spinner/spinner.component';
 import {ProgressbarComponent} from './ui/progressbar/progressbar.component';
 import {FooterContentComponent} from './footer/content/footerContent.component';
+import {ClientModule} from './client.module';
 
 @NgModule({
 	declarations: [
@@ -28,7 +29,8 @@ import {FooterContentComponent} from './footer/content/footerContent.component';
 		ProgressbarComponent
 	],
 	imports: [
-		BrowserModule
+		BrowserModule,
+		ClientModule.forRoot(),
 	],
 	bootstrap: [RootComponent]
 })

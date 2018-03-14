@@ -68,6 +68,7 @@
     <Compile Include="BusConfigurator.cs" />
     <Compile Include="Parameter.cs" />
     <Compile Include="ParameterEvent.cs" />
+    <Compile Include="ParameterEventResponse.cs" />
     <Compile Include="ParameterRequest.cs" />
     <Compile Include="ParameterResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

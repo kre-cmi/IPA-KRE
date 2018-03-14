@@ -6,8 +6,19 @@ using System.Threading.Tasks;
 
 namespace CMI.Manager.Parameter
 {
-    static class ParameterHelper
+    public static class ParameterHelper
     {
-        
+        private static string paramaters = string.Empty;
+        public static string Parameters
+        {
+            get => paramaters;
+            set
+            {
+                if (value == string.Empty)
+                    paramaters = string.Empty;
+                else
+                    paramaters += value;
+            }
+        }
     }
 }

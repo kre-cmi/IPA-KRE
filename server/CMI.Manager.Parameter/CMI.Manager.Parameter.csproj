@@ -65,6 +65,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ParameterEventResponseConsumer.cs" />
     <Compile Include="ParameterHelper.cs" />
     <Compile Include="ParameterRequestConsumer.cs" />
     <Compile Include="ParameterService.cs" />

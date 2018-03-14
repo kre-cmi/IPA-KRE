@@ -7,6 +7,7 @@ export class ParameterService {
 	}
 	public async getAllParameters() {
 		let url = this._createBaseUrl() + '/GetAllParameters';
+		return await this._http.get<string[]>(url, this._http.noCaching).toPromise();
 	}
 	public async getAllNewsForManagementClient(): Promise<string[]> {
 		let url = this._createBaseUrl() + '/GetAllNewsForManagementClient';
@@ -24,8 +25,11 @@ export class ParameterService {
 	}
 
 	private _createBaseUrl(): string {
-		// return this._options.serverUrl + this._options.publicPort + '/api/News';
-		return 'toDo';
+		let loc = window.location;
+		let port = isNaN(parseInt(loc.port, 10)) ? undefined : parseInt(loc.port, 10);
+		let baseUrl = '' + loc.protocol + '//' + loc.hostname + (port ? ':' + port : '') + '/ipa/Controllers';
+		console.log(baseUrl);
+		return baseUrl;
 	}
 
 	public async insertOrUpdateNews(news: any): Promise<any> {

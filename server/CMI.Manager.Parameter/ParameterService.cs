@@ -7,7 +7,7 @@ namespace CMI.Manager.Parameter
 {
     public class ParameterService
     {
-        private IBusControl ParameterBus { get; set; }
+        public static IBusControl ParameterBus { get; set; }
         public void Start()
         {
             ParameterBus = BusConfigurator.ConfigureBus((cfg, host) =>
@@ -16,13 +16,18 @@ namespace CMI.Manager.Parameter
                 {
                     ec.Consumer(() => new ParameterRequestConsumer());
                 });
+                cfg.ReceiveEndpoint("ResponseParameterEventQueue", ec =>
+                {
+                    ec.Consumer(() => new ParameterEventResponseConsumer());
+                });
             });
             
             ParameterBus.Start();
-            do
+            /*do
             {
                 PullSettings();
             } while (true);
+            */
         }
 
         public void PullSettings()

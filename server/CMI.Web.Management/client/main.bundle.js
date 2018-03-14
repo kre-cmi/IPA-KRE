@@ -17,6 +17,210 @@ webpackEmptyAsyncContext.id = "../../../../../src/$$_lazy_route_resource lazy re
 
 /***/ }),
 
+/***/ "../../../../../src/app/Services/httpService.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var http_1 = __webpack_require__("../../../common/esm5/http.js");
+var HttpService = /** @class */ (function () {
+    function HttpService(_http) {
+        this._http = _http;
+        this.noCaching = { nonce: true };
+    }
+    HttpService.prototype._configureObservable = function (observable) {
+        return observable;
+    };
+    /**
+     * Requests a JSON from the provided url with HTTP method GET.
+     * @param {string} url
+     * @returns {Observable<T>}
+     */
+    HttpService.prototype.get = function (url, config) {
+        return this._configureObservable(this._http.get(url));
+    };
+    HttpService.prototype.download = function (url) {
+        var request = new http_1.HttpRequest('GET', url, { responseType: 'blob', reportProgress: true });
+        return this._http.request(request);
+    };
+    /**
+     * Sends request to provided url with HTTP method DELETE.
+     * @param {string} url
+     * @returns {Observable<T>}
+     */
+    HttpService.prototype.delete = function (url, config) {
+        return this._configureObservable(this._http.delete(url));
+    };
+    /**
+     * Sends a JSON to the provided url with HTTP method POST.
+     * @param {string} url
+     * @param {*} body
+     * @returns {Observable<T>}
+     */
+    HttpService.prototype.post = function (url, body, config) {
+        return this._configureObservable(this._http.post(url, body));
+    };
+    HttpService = __decorate([
+        core_1.Injectable(),
+        __metadata("design:paramtypes", [http_1.HttpClient])
+    ], HttpService);
+    return HttpService;
+}());
+exports.HttpService = HttpService;
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/Services/parameterService.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [0, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var httpService_1 = __webpack_require__("../../../../../src/app/Services/httpService.ts");
+var ParameterService = /** @class */ (function () {
+    function ParameterService(_http) {
+        this._http = _http;
+    }
+    ParameterService.prototype.getAllParameters = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var url;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        url = this._createBaseUrl() + '/GetAllParameters';
+                        return [4 /*yield*/, this._http.get(url, this._http.noCaching).toPromise()];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    ParameterService.prototype.getAllNewsForManagementClient = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var url;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        url = this._createBaseUrl() + '/GetAllNewsForManagementClient';
+                        return [4 /*yield*/, this._http.get(url, this._http.noCaching).toPromise()];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    ParameterService.prototype.deleteNews = function (idsToDelete) {
+        return __awaiter(this, void 0, void 0, function () {
+            var url;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        url = this._createBaseUrl() + '/DeleteNews';
+                        return [4 /*yield*/, this._http.post(url, idsToDelete, this._http.noCaching).toPromise()];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    ParameterService.prototype.getSingleNews = function (id) {
+        return __awaiter(this, void 0, void 0, function () {
+            var url;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        url = this._createBaseUrl() + '/GetSingleNews/' + id;
+                        return [4 /*yield*/, this._http.get(url, this._http.noCaching).toPromise()];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    ParameterService.prototype._createBaseUrl = function () {
+        var loc = window.location;
+        var port = isNaN(parseInt(loc.port, 10)) ? undefined : parseInt(loc.port, 10);
+        var baseUrl = '' + loc.protocol + '//' + loc.hostname + (port ? ':' + port : '') + '/ipa/Controllers';
+        console.log(baseUrl);
+        return baseUrl;
+    };
+    ParameterService.prototype.insertOrUpdateNews = function (news) {
+        return __awaiter(this, void 0, void 0, function () {
+            var url;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        url = this._createBaseUrl() + '/InsertOrUpdateNews';
+                        return [4 /*yield*/, this._http.post(url, news, this._http.noCaching).toPromise()];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    ParameterService = __decorate([
+        core_1.Injectable(),
+        __metadata("design:paramtypes", [httpService_1.HttpService])
+    ], ParameterService);
+    return ParameterService;
+}());
+exports.ParameterService = ParameterService;
+
+
+/***/ }),
+
 /***/ "../../../../../src/app/app.module.ts":
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -42,6 +246,7 @@ var loader_component_1 = __webpack_require__("../../../../../src/app/ui/loader/l
 var spinner_component_1 = __webpack_require__("../../../../../src/app/ui/spinner/spinner.component.ts");
 var progressbar_component_1 = __webpack_require__("../../../../../src/app/ui/progressbar/progressbar.component.ts");
 var footerContent_component_1 = __webpack_require__("../../../../../src/app/footer/content/footerContent.component.ts");
+var client_module_1 = __webpack_require__("../../../../../src/app/client.module.ts");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -61,7 +266,8 @@ var AppModule = /** @class */ (function () {
                 progressbar_component_1.ProgressbarComponent
             ],
             imports: [
-                platform_browser_1.BrowserModule
+                platform_browser_1.BrowserModule,
+                client_module_1.ClientModule.forRoot(),
             ],
             bootstrap: [root_component_1.RootComponent]
         })
@@ -69,6 +275,63 @@ var AppModule = /** @class */ (function () {
     return AppModule;
 }());
 exports.AppModule = AppModule;
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/client.module.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var router_1 = __webpack_require__("../../../router/esm5/router.js");
+var http_1 = __webpack_require__("../../../common/esm5/http.js");
+var animations_1 = __webpack_require__("../../../platform-browser/esm5/animations.js");
+var parameterService_1 = __webpack_require__("../../../../../src/app/Services/parameterService.ts");
+var httpService_1 = __webpack_require__("../../../../../src/app/Services/httpService.ts");
+var ClientModule = /** @class */ (function () {
+    function ClientModule() {
+    }
+    ClientModule_1 = ClientModule;
+    ClientModule.forRoot = function () {
+        return {
+            ngModule: ClientModule_1,
+            providers: [
+                httpService_1.HttpService,
+                parameterService_1.ParameterService,
+            ]
+        };
+    };
+    ClientModule = ClientModule_1 = __decorate([
+        core_1.NgModule({
+            declarations: [],
+            exports: [
+                router_1.RouterModule,
+                animations_1.BrowserAnimationsModule,
+            ],
+            imports: [
+                router_1.RouterModule,
+                http_1.HttpClientModule,
+                animations_1.BrowserAnimationsModule,
+            ]
+        }),
+        __metadata("design:paramtypes", [])
+    ], ClientModule);
+    return ClientModule;
+    var ClientModule_1;
+}());
+exports.ClientModule = ClientModule;
 
 
 /***/ }),
@@ -482,7 +745,7 @@ exports.NavigationComponent = NavigationComponent;
 /***/ "../../../../../src/app/root/root.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container container-main\">\r\n\r\n  <cmi-viaduc-header></cmi-viaduc-header>\r\n\r\n  <cmi-viaduc-nav></cmi-viaduc-nav>\r\n\r\n  <div class=\"row root-content-wrapper\">\r\n    <div class=\"col-xs-12\">\r\n      <div id=\"content\" class=\"container-fluid\">\r\n        <div class=\"row\">\r\n\t\t\t<div>\r\n\t\t\t\tContent!\r\n\t\t\t</div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n\r\n  <cmi-viaduc-footer></cmi-viaduc-footer>\r\n\r\n  <cmi-loader *ngIf=\"preloading\" class=\"cmi-visible\"></cmi-loader>\r\n</div>\r\n\r\n"
+module.exports = "<div class=\"container container-main\">\r\n\r\n  <cmi-viaduc-header></cmi-viaduc-header>\r\n\r\n  <cmi-viaduc-nav></cmi-viaduc-nav>\r\n\r\n  <div class=\"row root-content-wrapper\">\r\n    <div class=\"col-xs-12\">\r\n      <div id=\"content\" class=\"container-fluid\">\r\n        <div class=\"row\">\r\n\t\t\t<div>\r\n\t\t\t\tContent!\r\n\t\t\t\t<button (click)=\"getParameters()\">\r\n\t\t\t\t\tClicke me!\r\n\t\t\t\t</button>\r\n\t\t\t</div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n\r\n  <cmi-viaduc-footer></cmi-viaduc-footer>\r\n\r\n  <cmi-loader *ngIf=\"preloading\" class=\"cmi-visible\"></cmi-loader>\r\n</div>\r\n\r\n"
 
 /***/ }),
 
@@ -520,18 +783,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var parameterService_1 = __webpack_require__("../../../../../src/app/Services/parameterService.ts");
 var RootComponent = /** @class */ (function () {
-    function RootComponent() {
+    function RootComponent(_params) {
+        this._params = _params;
         this.preloading = true;
         this.preloading = false;
     }
+    RootComponent.prototype.getParameters = function () {
+        var response = this._params.getAllParameters();
+        console.log(response);
+    };
     RootComponent = __decorate([
         core_1.Component({
             selector: 'cmi-viaduc-root',
             template: __webpack_require__("../../../../../src/app/root/root.component.html"),
             styles: [__webpack_require__("../../../../../src/app/root/root.component.less")]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [parameterService_1.ParameterService])
     ], RootComponent);
     return RootComponent;
 }());

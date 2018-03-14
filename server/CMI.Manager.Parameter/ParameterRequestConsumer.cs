@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using CMI.Contract.Parameter;
 using MassTransit;
@@ -7,13 +8,18 @@ namespace CMI.Manager.Parameter
 {
     public class ParameterRequestConsumer : IConsumer<ParameterRequest>
     {
-        public async Task Consume(ConsumeContext<ParameterRequest> context)
+        public Task Consume(ConsumeContext<ParameterRequest> context)
         {
-            await Console.Out.WriteLineAsync(context.Message.Message);
-            await context.RespondAsync(new ParameterResponse()
+            Console.Out.WriteLineAsync(context.Message.Message);
+            ParameterHelper.Parameters = string.Empty;
+            ParameterService.ParameterBus.Publish(new ParameterEvent { Type = "ParameterEvent" });
+            Console.Out.WriteLineAsync("Event started");
+            Thread.Sleep(1000);
+            context.RespondAsync(new ParameterResponse()
             {
-                Message = "The Parameter Request Consumed the message Successfully!"
+                Message = ParameterHelper.Parameters
             });
+            return Console.Out.WriteLineAsync("Event response sent");
         }
     }
 }
