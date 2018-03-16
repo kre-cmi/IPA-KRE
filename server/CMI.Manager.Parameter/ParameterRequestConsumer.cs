@@ -14,7 +14,7 @@ namespace CMI.Manager.Parameter
             ParameterHelper.Parameters = string.Empty;
             ParameterService.ParameterBus.Publish(new ParameterEvent { Type = "ParameterEvent" });
             Console.Out.WriteLineAsync("Event started");
-            Thread.Sleep(1500);
+            Thread.Sleep(25);
             context.RespondAsync(new ParameterResponse()
             {
                 Message = ParameterHelper.Parameters
