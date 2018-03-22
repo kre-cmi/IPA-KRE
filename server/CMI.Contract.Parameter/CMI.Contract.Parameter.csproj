@@ -65,13 +65,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\DefaultAttribute.cs" />
+    <Compile Include="Attributes\DescriptionAttribute.cs" />
     <Compile Include="BusConfigurator.cs" />
+    <Compile Include="Attributes\MandatoryAttribute.cs" />
+    <Compile Include="IParameter.cs" />
     <Compile Include="Parameter.cs" />
     <Compile Include="ParameterEvent.cs" />
     <Compile Include="ParameterEventResponse.cs" />
+    <Compile Include="ParameterHelper.cs" />
     <Compile Include="ParameterRequest.cs" />
     <Compile Include="ParameterResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Attributes\ValidationAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
