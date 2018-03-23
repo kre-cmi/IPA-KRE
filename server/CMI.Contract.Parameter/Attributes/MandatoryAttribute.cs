@@ -2,7 +2,7 @@
 
 namespace CMI.Contract.Parameter.Attributes
 {
-    [AttributeUsage(AttributeTargets.Property)]
+    [AttributeUsage(AttributeTargets.Field)]
     public class MandatoryAttribute : Attribute
     {
     }

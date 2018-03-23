@@ -1,0 +1,15 @@
+<div *ngIf="parameter" class="parameter-list row" [title]="parameter.description">
+	<div class="col-md-3">
+		Name: {{parameter.name}}
+	</div>
+	<div class="col-md-3">
+		Default: {{parameter.default}}
+	</div>
+	<div class="col-md-4">
+		Value: <input class="form-control" [type]="parameter.type" (click)="onFocus()" (change)="onValueChanged($event)" [checked]="getChecked()" [value]="getValue()">
+	</div>
+	<div *ngIf="active" class="col-md-2">
+		<input type="button" class="btn" value="Speichern" (click)="saveParameter()">
+		<input type="button" class="btn" value="Abbrechen" (click)="cancelEdit()">
+	</div>
+</div>

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using CMI.Contract.Parameter;
@@ -11,13 +12,13 @@ namespace CMI.Manager.Parameter
         public Task Consume(ConsumeContext<ParameterRequest> context)
         {
             Console.Out.WriteLineAsync(context.Message.Message);
-            ParameterHelper.Parameters = string.Empty;
+            ParameterHelper.Parameters = new List<Contract.Parameter.Parameter>();
             ParameterService.ParameterBus.Publish(new ParameterEvent { Type = "ParameterEvent" });
             Console.Out.WriteLineAsync("Event started");
-            Thread.Sleep(25);
+            Thread.Sleep(400);
             context.RespondAsync(new ParameterResponse()
             {
-                Message = ParameterHelper.Parameters
+                Parameters = ParameterHelper.Parameters.ToArray()
             });
             return Console.Out.WriteLineAsync("Event response sent");
         }

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using CMI.Contract.Parameter;
 using MassTransit;
@@ -13,8 +9,8 @@ namespace CMI.Manager.Parameter
     {
         public async Task Consume(ConsumeContext<ParameterEventResponse> context)
         {
-            ParameterHelper.Parameters += context.Message.Message + " / ";
-            await Console.Out.WriteLineAsync("Parameter string is now " + ParameterHelper.Parameters);
+            ParameterHelper.Parameters.AddRange(context.Message.Parameters);
+            await Console.Out.WriteLineAsync("Parameter Recived");
         }
     }
 }

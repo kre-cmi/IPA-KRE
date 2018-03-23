@@ -2,11 +2,11 @@
 
 namespace CMI.Contract.Parameter.Attributes
 {
-    [AttributeUsage(AttributeTargets.Property)]
+    [AttributeUsage(AttributeTargets.Field)]
     public class ValidationAttribute : Attribute
     {
         public string Regex { get; set; }
-        public ValidationAttribute(string regex, string errorMessage)
+        public ValidationAttribute(string regex)
         {
             Regex = regex;
         }

@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpService} from './httpService';
+import {Parameter} from '../parameterManager/parameterEntity';
 
 @Injectable()
 export class ParameterService {
@@ -7,11 +8,11 @@ export class ParameterService {
 	}
 	public async getAllParameters() {
 		let url = this._createBaseUrl() + '/GetAllParameters';
-		return await this._http.get<string[]>(url, this._http.noCaching).toPromise();
+		return await this._http.get<Parameter[]>(url, this._http.noCaching).toPromise();
 	}
-	public async getAllNewsForManagementClient(): Promise<string[]> {
-		let url = this._createBaseUrl() + '/GetAllNewsForManagementClient';
-		return await this._http.get<string[]>(url, this._http.noCaching).toPromise();
+	public async saveParameter(param: Parameter) {
+		let url = this._createBaseUrl() + '/SaveParameter' + param;
+		return await this._http.post<boolean>(url, this._http.noCaching).toPromise();
 	}
 
 	public async deleteNews(idsToDelete: any): Promise<any> {

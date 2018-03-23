@@ -1,59 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
+using System.Linq;
 using System.Reflection;
-using System.Threading;
 using CMI.Contract.Parameter.Attributes;
 
 namespace CMI.Contract.Parameter
 {
     public static class ParameterHelper
     {
-        public static string GetJsonStringOfType(IParameter parameter)
+        public static string GetJsonStringOfParameter(IParameter parameter)
+        {
+            var paramList = GetParameterListFromParameter(parameter);
+
+            var jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(paramList);
+
+            if (jsonString == null)
+            {
+                throw new NullReferenceException();
+            }
+            return jsonString;
+        }
+
+        public static Parameter[] GetParameterListFromParameter(IParameter parameter)
         {
             var paramList = new List<Parameter>();
-            foreach (var propertyInfo in parameter.GetType().GetProperties())
+            var nameSufix = parameter.GetType().Namespace;
+            foreach (var fieldInfo in parameter.GetType().GetFields())
             {
-                var mandatory = false;
-                string description = null;
-                string validationString = null;
-                string defaultValue = null;
-
-                var attributes = propertyInfo.GetCustomAttributes(true);
-                foreach (var attribute in attributes)
-                {
-                    var defaultAttribute = attribute as DefaultAttribute;
-                    var mandatoryAttribute = attribute as MandatoryAttribute;
-                    var validationAttribute = attribute as ValidationAttribute;
-                    var descriptionAttribute = attribute as DescriptionAttribute;
-                    if (mandatoryAttribute != null)
-                    {
-                        mandatory = true;
-                    }
-                    if (defaultAttribute != null)
-                    {
-                        defaultValue = defaultAttribute.Default;
-                    }
-                    if (validationAttribute != null)
-                    {
-                        validationString = validationAttribute.Regex;
-                    }
-                    if (descriptionAttribute != null)
-                    {
-                        description = descriptionAttribute.Description;
-                    }
-                }
-                
-                var param = new Parameter
-                {
-                    Default = defaultValue,
-                    Description = description,
-                    Mandatory = mandatory,
-                    Name = propertyInfo.Name,
-                    RegexValidation = validationString,
-                    Type = GetType(propertyInfo.PropertyType),
-                    Value = GetValue(propertyInfo, parameter)
-                };
+                var param = CreateParameter(fieldInfo, parameter, nameSufix);
                 if (param.Name != null)
                 {
                     paramList.Add(param);
@@ -63,29 +37,100 @@ namespace CMI.Contract.Parameter
                     throw new NullReferenceException();
                 }
             }
-
-            var jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(paramList);
-
-            if (jsonString == null)
-            {
-                throw new NullReferenceException();
-            }
-            return jsonString;
-
+            return paramList.ToArray();
         }
 
-        private static string GetValue(PropertyInfo propertyInfo, IParameter parameter)
+        public static IParameter GetParameters(IParameter parameter)
         {
-            return propertyInfo.GetValue(parameter).ToString();
+            var path = GetParameterPath(parameter);
+            if (!System.IO.File.Exists(path))
+            {
+                OverrideParameter(parameter);   
+            }
+            var jsonString = System.IO.File.ReadAllText(path);
+            var paramList = Newtonsoft.Json.JsonConvert.DeserializeObject<Parameter[]>(jsonString);
+            var nameSufix = parameter.GetType().Namespace;
+
+            foreach (var fieldInfo in parameter.GetType().GetFields())
+            {
+                var value = paramList.First(p => p.Name == nameSufix + "." + fieldInfo.Name)?.Value;
+                if (value != null)
+                {
+                    fieldInfo.SetValue(parameter, Convert.ChangeType(value, fieldInfo.FieldType));
+                }
+            }
+
+            return parameter;
+        }
+
+        public static void OverrideParameter(IParameter p)
+        {
+            var path = GetParameterPath(p);
+            var jsonString = GetJsonStringOfParameter(p);
+            System.IO.File.WriteAllText(path, jsonString);
+        }
+
+        private static string GetParameterPath(IParameter p)
+        {
+            var fullPath = p.GetType().Assembly.CodeBase;
+            var path = fullPath.Replace(fullPath.Split('/').Last(), "parameters.json");
+            var uri = new UriBuilder(path);
+            return Uri.UnescapeDataString(uri.Path);
+        }
+
+        private static Parameter CreateParameter(FieldInfo fieldInfo, IParameter parameter, string sufix)
+        {
+            var param = new Parameter
+            {
+                Name = sufix + "." + fieldInfo.Name,
+                Value = GetValue(fieldInfo, parameter),
+                Type = GetType(fieldInfo.FieldType)
+            };
+
+            var attributes = fieldInfo.GetCustomAttributes(true);
+            foreach (var attribute in attributes)
+            {
+                var mandatoryAttribute = attribute as MandatoryAttribute;
+                var defaultAttribute = attribute as DefaultAttribute;
+                var validationAttribute = attribute as ValidationAttribute;
+                var descriptionAttribute = attribute as DescriptionAttribute;
+                if (mandatoryAttribute != null)
+                {
+                    param.Mandatory = true;
+                }
+                if (defaultAttribute != null)
+                {
+                    param.Default = defaultAttribute.Default;
+                }
+                if (validationAttribute != null)
+                {
+                    param.RegexValidation = validationAttribute.Regex;
+                }
+                if (descriptionAttribute != null)
+                {
+                    param.Description = descriptionAttribute.Description;
+                }
+            }
+            if (param.Name == null || param.Type == null)
+            {
+                return null;
+            }
+            return param;
+        }
+
+        private static string GetValue(FieldInfo fieldInfo, IParameter parameter)
+        {
+            var value = fieldInfo.GetValue(parameter);
+            return value?.ToString();
         }
 
         private static string GetType(Type type)
         {
-            if (type.Name == "bool")
+            if (type.Name == "Boolean")
             {
-                return "bool";
+                return "checkbox";
             }
-            if (type.Name == "int" || type.Name == "double" || type.Name == "float")
+            if (type.Name == "int32" || type.Name == "Double" || type.Name == "Float" || type.Name == "int64" || type.Name == "Long")
             {
                 return "number";
             }

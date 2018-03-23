@@ -1,0 +1,9 @@
+<div *ngIf="!loading">
+	<h1>Zentralisierte Parameterverwaltung</h1>
+	<div *ngFor="let param of parameters">
+		<cmi-viaduc-parameter [parameter]="param"></cmi-viaduc-parameter>
+	</div>
+</div>
+<cmi-blocker *ngIf="loading">
+	<cmi-loader></cmi-loader>
+</cmi-blocker>

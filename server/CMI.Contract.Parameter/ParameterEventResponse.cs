@@ -8,6 +8,6 @@ namespace CMI.Contract.Parameter
 {
     public class ParameterEventResponse
     {
-        public string Message { get; set; }
+        public Parameter[] Parameters { get; set; }
     }
 }

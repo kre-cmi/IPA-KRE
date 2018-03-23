@@ -15,7 +15,7 @@ namespace CMI.Manager.ExampleServiceB
                 {
                     ep.Handler<ParameterEvent>(context =>
                     {
-                        ParameterBus.Publish(new ParameterEventResponse { Message = "Example Service B Response" });
+                        //ParameterBus.Publish(new ParameterEventResponse { Parameters = "Example Service B Response" });
                         return Console.Out.WriteLineAsync("response sent from Parameter Service B!");
                     });
                 });

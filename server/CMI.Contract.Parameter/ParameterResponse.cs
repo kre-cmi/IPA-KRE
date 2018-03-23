@@ -2,6 +2,6 @@
 {
     public class ParameterResponse
     {
-        public string Message { get; set; }
+        public Parameter[] Parameters { get; set; }
     }
 }

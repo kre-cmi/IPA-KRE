@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { ParameterService} from '../Services/parameterService';
 
 @Component({
 	selector: 'cmi-viaduc-root',
@@ -8,13 +7,7 @@ import { ParameterService} from '../Services/parameterService';
 })
 export class RootComponent {
 	public preloading: boolean = true;
-
-	constructor(private _params: ParameterService) {
+	constructor() {
 		this.preloading = false;
-	}
-
-	public getParameters(): void {
-		let response = this._params.getAllParameters();
-		console.log(response);
 	}
 }

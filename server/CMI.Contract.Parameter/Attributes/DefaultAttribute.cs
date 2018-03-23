@@ -2,7 +2,7 @@
 
 namespace CMI.Contract.Parameter.Attributes
 {
-    [AttributeUsage(AttributeTargets.Property)]
+    [AttributeUsage(AttributeTargets.Field)]
     public class DefaultAttribute : Attribute
     {
         public string Default { get; set; }

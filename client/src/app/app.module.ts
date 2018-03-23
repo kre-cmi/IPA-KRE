@@ -13,6 +13,8 @@ import {SpinnerComponent} from './ui/spinner/spinner.component';
 import {ProgressbarComponent} from './ui/progressbar/progressbar.component';
 import {FooterContentComponent} from './footer/content/footerContent.component';
 import {ClientModule} from './client.module';
+import {ParameterComponent} from './parameterManager/parameter/parameter.component';
+import {ParameterListComponent} from './parameterManager/parameterList/parameterList.component';
 
 @NgModule({
 	declarations: [
@@ -26,7 +28,9 @@ import {ClientModule} from './client.module';
 		BlockerComponent,
 		LoaderComponent,
 		SpinnerComponent,
-		ProgressbarComponent
+		ProgressbarComponent,
+		ParameterComponent,
+		ParameterListComponent
 	],
 	imports: [
 		BrowserModule,

@@ -151,14 +151,14 @@ var ParameterService = /** @class */ (function () {
             });
         });
     };
-    ParameterService.prototype.getAllNewsForManagementClient = function () {
+    ParameterService.prototype.saveParameter = function (param) {
         return __awaiter(this, void 0, void 0, function () {
             var url;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        url = this._createBaseUrl() + '/GetAllNewsForManagementClient';
-                        return [4 /*yield*/, this._http.get(url, this._http.noCaching).toPromise()];
+                        url = this._createBaseUrl() + '/SaveParameter' + param;
+                        return [4 /*yield*/, this._http.post(url, this._http.noCaching).toPromise()];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
             });
@@ -247,6 +247,8 @@ var spinner_component_1 = __webpack_require__("../../../../../src/app/ui/spinner
 var progressbar_component_1 = __webpack_require__("../../../../../src/app/ui/progressbar/progressbar.component.ts");
 var footerContent_component_1 = __webpack_require__("../../../../../src/app/footer/content/footerContent.component.ts");
 var client_module_1 = __webpack_require__("../../../../../src/app/client.module.ts");
+var parameter_component_1 = __webpack_require__("../../../../../src/app/parameterManager/parameter/parameter.component.ts");
+var parameterList_component_1 = __webpack_require__("../../../../../src/app/parameterManager/parameterList/parameterList.component.ts");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -263,7 +265,9 @@ var AppModule = /** @class */ (function () {
                 blocker_component_1.BlockerComponent,
                 loader_component_1.LoaderComponent,
                 spinner_component_1.SpinnerComponent,
-                progressbar_component_1.ProgressbarComponent
+                progressbar_component_1.ProgressbarComponent,
+                parameter_component_1.ParameterComponent,
+                parameterList_component_1.ParameterListComponent
             ],
             imports: [
                 platform_browser_1.BrowserModule,
@@ -742,10 +746,246 @@ exports.NavigationComponent = NavigationComponent;
 
 /***/ }),
 
+/***/ "../../../../../src/app/parameterManager/parameter/parameter.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div *ngIf=\"parameter\" class=\"parameter-list row\" [title]=\"parameter.description\">\r\n\t<div class=\"col-md-3\">\r\n\t\tName: {{parameter.name}}\r\n\t</div>\r\n\t<div class=\"col-md-3\">\r\n\t\tDefault: {{parameter.default}}\r\n\t</div>\r\n\t<div class=\"col-md-4\">\r\n\t\tValue: <input class=\"form-control\" [type]=\"parameter.type\" (click)=\"onFocus()\" (change)=\"onValueChanged($event)\" [checked]=\"getChecked()\" [value]=\"getValue()\">\r\n\t</div>\r\n\t<div *ngIf=\"active\" class=\"col-md-2\">\r\n\t\t<input type=\"button\" class=\"btn\" value=\"Speichern\" (click)=\"saveParameter()\">\r\n\t\t<input type=\"button\" class=\"btn\" value=\"Abbrechen\" (click)=\"cancelEdit()\">\r\n\t</div>\r\n</div>\r\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/parameterManager/parameter/parameter.component.less":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, ".parameter-list {\n  border-bottom: 1px solid #ddd;\n  border-top: 1px solid #ddd;\n  margin-left: 5px;\n  margin-right: 5px;\n}\n.parameter-list div .form-control[type='text'] {\n  display: initial;\n  width: calc(100% - 50px);\n}\n.parameter-list div .form-control[type='checkbox'] {\n  display: initial;\n  width: auto;\n}\n", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/parameterManager/parameter/parameter.component.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var parameterService_1 = __webpack_require__("../../../../../src/app/Services/parameterService.ts");
+var Subject_1 = __webpack_require__("../../../../rxjs/_esm5/Subject.js");
+var ParameterComponent = /** @class */ (function () {
+    function ParameterComponent(_paramService) {
+        this._paramService = _paramService;
+        this.active = false;
+    }
+    ParameterComponent_1 = ParameterComponent;
+    ParameterComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        ParameterComponent_1._onChanged.subscribe(function (name) {
+            if (_this.active && _this.parameter.name !== name) {
+                _this.active = false;
+            }
+        });
+    };
+    ParameterComponent.prototype.onValueChanged = function (event) {
+        if (this.parameter.type === 'checkbox') {
+            this.checked = event.target.checked;
+            if (this.checked === (this.parameter.value === 'True')) {
+                this.active = false;
+            }
+        }
+        else {
+            this._newValue += event.target.value;
+        }
+    };
+    ParameterComponent.prototype.onFocus = function () {
+        ParameterComponent_1._onChanged.next(this.parameter.name);
+        this.active = true;
+    };
+    ParameterComponent.prototype.saveParameter = function () {
+        this.parameter.value = this._newValue;
+        this._paramService.saveParameter(this.parameter);
+    };
+    ParameterComponent.prototype.cancelEdit = function () {
+        this._newValue = null;
+        if (this.parameter.type === 'checkbox') {
+            this.checked = this.parameter.value === 'True';
+        }
+        else {
+            this._value = this.parameter.value;
+        }
+        this.active = false;
+    };
+    ParameterComponent.prototype.getValue = function () {
+        if (this._value) {
+            return this._value;
+        }
+        else {
+            return this.parameter.value;
+        }
+    };
+    ParameterComponent.prototype.getChecked = function () {
+        if (this.checked) {
+            return this.checked;
+        }
+        else {
+            return this.parameter.value === 'True';
+        }
+    };
+    ParameterComponent._onChanged = new Subject_1.Subject();
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", Object)
+    ], ParameterComponent.prototype, "parameter", void 0);
+    ParameterComponent = ParameterComponent_1 = __decorate([
+        core_1.Component({
+            selector: 'cmi-viaduc-parameter',
+            template: __webpack_require__("../../../../../src/app/parameterManager/parameter/parameter.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/parameterManager/parameter/parameter.component.less")]
+        }),
+        __metadata("design:paramtypes", [parameterService_1.ParameterService])
+    ], ParameterComponent);
+    return ParameterComponent;
+    var ParameterComponent_1;
+}());
+exports.ParameterComponent = ParameterComponent;
+
+
+/***/ }),
+
+/***/ "../../../../../src/app/parameterManager/parameterList/parameterList.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div *ngIf=\"!loading\">\r\n\t<h1>Zentralisierte Parameterverwaltung</h1>\r\n\t<div *ngFor=\"let param of parameters\">\r\n\t\t<cmi-viaduc-parameter [parameter]=\"param\"></cmi-viaduc-parameter>\r\n\t</div>\r\n</div>\r\n<cmi-blocker *ngIf=\"loading\">\r\n\t<cmi-loader></cmi-loader>\r\n</cmi-blocker>\r\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/parameterManager/parameterList/parameterList.component.less":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/parameterManager/parameterList/parameterList.component.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = y[op[0] & 2 ? "return" : op[0] ? "throw" : "next"]) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [0, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var parameterService_1 = __webpack_require__("../../../../../src/app/Services/parameterService.ts");
+var ParameterListComponent = /** @class */ (function () {
+    function ParameterListComponent(_params) {
+        this._params = _params;
+        this.loading = true;
+        this.parameters = [];
+        this.getAllParameters();
+        console.log('done');
+    }
+    ParameterListComponent.prototype.getAllParameters = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var _this = this;
+            return __generator(this, function (_a) {
+                this._params.getAllParameters().then(function (response) {
+                    _this.parameters = response;
+                    console.log(_this.parameters);
+                    _this.loading = false;
+                });
+                return [2 /*return*/];
+            });
+        });
+    };
+    ParameterListComponent = __decorate([
+        core_1.Component({
+            selector: 'cmi-viaduc-parameterList',
+            template: __webpack_require__("../../../../../src/app/parameterManager/parameterList/parameterList.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/parameterManager/parameterList/parameterList.component.less")]
+        }),
+        __metadata("design:paramtypes", [parameterService_1.ParameterService])
+    ], ParameterListComponent);
+    return ParameterListComponent;
+}());
+exports.ParameterListComponent = ParameterListComponent;
+
+
+/***/ }),
+
 /***/ "../../../../../src/app/root/root.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container container-main\">\r\n\r\n  <cmi-viaduc-header></cmi-viaduc-header>\r\n\r\n  <cmi-viaduc-nav></cmi-viaduc-nav>\r\n\r\n  <div class=\"row root-content-wrapper\">\r\n    <div class=\"col-xs-12\">\r\n      <div id=\"content\" class=\"container-fluid\">\r\n        <div class=\"row\">\r\n\t\t\t<div>\r\n\t\t\t\tContent!\r\n\t\t\t\t<button (click)=\"getParameters()\">\r\n\t\t\t\t\tClicke me!\r\n\t\t\t\t</button>\r\n\t\t\t</div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n\r\n  <cmi-viaduc-footer></cmi-viaduc-footer>\r\n\r\n  <cmi-loader *ngIf=\"preloading\" class=\"cmi-visible\"></cmi-loader>\r\n</div>\r\n\r\n"
+module.exports = "<div class=\"container container-main\">\r\n\r\n  <cmi-viaduc-header></cmi-viaduc-header>\r\n\r\n  <cmi-viaduc-nav></cmi-viaduc-nav>\r\n\r\n  <div class=\"row root-content-wrapper\">\r\n    <div class=\"col-xs-12\">\r\n      <div id=\"content\" class=\"container-fluid\">\r\n        <cmi-viaduc-parameterList></cmi-viaduc-parameterList>\r\n      </div>\r\n    </div>\r\n  </div>\r\n\r\n  <cmi-viaduc-footer></cmi-viaduc-footer>\r\n\r\n  <cmi-loader *ngIf=\"preloading\" class=\"cmi-visible\"></cmi-loader>\r\n</div>\r\n\r\n"
 
 /***/ }),
 
@@ -783,24 +1023,18 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = __webpack_require__("../../../core/esm5/core.js");
-var parameterService_1 = __webpack_require__("../../../../../src/app/Services/parameterService.ts");
 var RootComponent = /** @class */ (function () {
-    function RootComponent(_params) {
-        this._params = _params;
+    function RootComponent() {
         this.preloading = true;
         this.preloading = false;
     }
-    RootComponent.prototype.getParameters = function () {
-        var response = this._params.getAllParameters();
-        console.log(response);
-    };
     RootComponent = __decorate([
         core_1.Component({
             selector: 'cmi-viaduc-root',
             template: __webpack_require__("../../../../../src/app/root/root.component.html"),
             styles: [__webpack_require__("../../../../../src/app/root/root.component.less")]
         }),
-        __metadata("design:paramtypes", [parameterService_1.ParameterService])
+        __metadata("design:paramtypes", [])
     ], RootComponent);
     return RootComponent;
 }());
