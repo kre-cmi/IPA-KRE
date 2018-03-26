@@ -11,18 +11,9 @@ export class ParameterService {
 		return await this._http.get<Parameter[]>(url, this._http.noCaching).toPromise();
 	}
 	public async saveParameter(param: Parameter) {
-		let url = this._createBaseUrl() + '/SaveParameter' + param;
-		return await this._http.post<boolean>(url, this._http.noCaching).toPromise();
-	}
-
-	public async deleteNews(idsToDelete: any): Promise<any> {
-		let url = this._createBaseUrl() + '/DeleteNews';
-		return await this._http.post(url, idsToDelete, this._http.noCaching).toPromise();
-	}
-
-	public async getSingleNews(id: string): Promise<any> {
-		let url = this._createBaseUrl() + '/GetSingleNews/' + id;
-		return await this._http.get<string>(url, this._http.noCaching).toPromise();
+		let url = this._createBaseUrl() + '/SaveParameter';
+		console.log('saveparam: - ' + param.value);
+		return await this._http.post<void>(url, param, this._http.noCaching).toPromise();
 	}
 
 	private _createBaseUrl(): string {
@@ -31,10 +22,5 @@ export class ParameterService {
 		let baseUrl = '' + loc.protocol + '//' + loc.hostname + (port ? ':' + port : '') + '/ipa/Controllers';
 		console.log(baseUrl);
 		return baseUrl;
-	}
-
-	public async insertOrUpdateNews(news: any): Promise<any> {
-		let url = this._createBaseUrl() + '/InsertOrUpdateNews';
-		return await this._http.post(url, news, this._http.noCaching).toPromise();
 	}
 }

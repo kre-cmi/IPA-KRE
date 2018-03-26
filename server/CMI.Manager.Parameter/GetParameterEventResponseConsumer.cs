@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
-using CMI.Contract.Parameter;
+using CMI.Contract.Parameter.GetParameter;
 using MassTransit;
 
 namespace CMI.Manager.Parameter
 {
-    public class ParameterEventResponseConsumer : IConsumer<ParameterEventResponse>
+    public class GetParameterEventResponseConsumer : IConsumer<GetParameterEventResponse>
     {
-        public async Task Consume(ConsumeContext<ParameterEventResponse> context)
+        public async Task Consume(ConsumeContext<GetParameterEventResponse> context)
         {
             ParameterHelper.Parameters.AddRange(context.Message.Parameters);
             await Console.Out.WriteLineAsync("Parameter Recived");

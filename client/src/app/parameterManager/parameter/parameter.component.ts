@@ -35,7 +35,7 @@ export class ParameterComponent implements OnInit {
 				this.active = false;
 			}
 		} else {
-			this._newValue += event.target.value;
+			this._newValue = event.target.value;
 		}
 	}
 
@@ -45,6 +45,7 @@ export class ParameterComponent implements OnInit {
 	}
 
 	public saveParameter() {
+		console.log('New Value: ' + this._newValue);
 		this.parameter.value = this._newValue;
 		this._paramService.saveParameter(this.parameter);
 	}
@@ -62,8 +63,10 @@ export class ParameterComponent implements OnInit {
 
 	public getValue(): string {
 		if (this._value) {
+			console.log('GetValueValue: ' + this._value);
 			return this._value;
 		} else {
+			console.log('GetValueParameter: ' + this.parameter.value);
 			return this.parameter.value;
 		}
 	}

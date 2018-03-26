@@ -1,5 +1,4 @@
-﻿using System;
-using CMI.Contract.Parameter;
+﻿using CMI.Contract.Parameter;
 using CMI.Contract.Parameter.Attributes;
 
 namespace CMI.Manager.ExampleServiceA

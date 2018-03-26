@@ -1,5 +1,6 @@
 ﻿using System;
 using CMI.Contract.Parameter;
+using CMI.Contract.Parameter.GetParameter;
 using MassTransit;
 
 namespace CMI.Manager.ExampleServiceB
@@ -13,7 +14,7 @@ namespace CMI.Manager.ExampleServiceB
             {
                 cfg.ReceiveEndpoint(host, "GetAllParametersB", ep =>
                 {
-                    ep.Handler<ParameterEvent>(context =>
+                    ep.Handler<GetParameterEvent>(context =>
                     {
                         //ParameterBus.Publish(new ParameterEventResponse { Parameters = "Example Service B Response" });
                         return Console.Out.WriteLineAsync("response sent from Parameter Service B!");

@@ -157,34 +157,9 @@ var ParameterService = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        url = this._createBaseUrl() + '/SaveParameter' + param;
-                        return [4 /*yield*/, this._http.post(url, this._http.noCaching).toPromise()];
-                    case 1: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
-    ParameterService.prototype.deleteNews = function (idsToDelete) {
-        return __awaiter(this, void 0, void 0, function () {
-            var url;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        url = this._createBaseUrl() + '/DeleteNews';
-                        return [4 /*yield*/, this._http.post(url, idsToDelete, this._http.noCaching).toPromise()];
-                    case 1: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
-    };
-    ParameterService.prototype.getSingleNews = function (id) {
-        return __awaiter(this, void 0, void 0, function () {
-            var url;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        url = this._createBaseUrl() + '/GetSingleNews/' + id;
-                        return [4 /*yield*/, this._http.get(url, this._http.noCaching).toPromise()];
+                        url = this._createBaseUrl() + '/SaveParameter';
+                        console.log('saveparam: - ' + param.value);
+                        return [4 /*yield*/, this._http.post(url, param, this._http.noCaching).toPromise()];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
             });
@@ -196,19 +171,6 @@ var ParameterService = /** @class */ (function () {
         var baseUrl = '' + loc.protocol + '//' + loc.hostname + (port ? ':' + port : '') + '/ipa/Controllers';
         console.log(baseUrl);
         return baseUrl;
-    };
-    ParameterService.prototype.insertOrUpdateNews = function (news) {
-        return __awaiter(this, void 0, void 0, function () {
-            var url;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        url = this._createBaseUrl() + '/InsertOrUpdateNews';
-                        return [4 /*yield*/, this._http.post(url, news, this._http.noCaching).toPromise()];
-                    case 1: return [2 /*return*/, _a.sent()];
-                }
-            });
-        });
     };
     ParameterService = __decorate([
         core_1.Injectable(),
@@ -811,7 +773,7 @@ var ParameterComponent = /** @class */ (function () {
             }
         }
         else {
-            this._newValue += event.target.value;
+            this._newValue = event.target.value;
         }
     };
     ParameterComponent.prototype.onFocus = function () {
@@ -819,6 +781,7 @@ var ParameterComponent = /** @class */ (function () {
         this.active = true;
     };
     ParameterComponent.prototype.saveParameter = function () {
+        console.log('New Value: ' + this._newValue);
         this.parameter.value = this._newValue;
         this._paramService.saveParameter(this.parameter);
     };
@@ -834,9 +797,11 @@ var ParameterComponent = /** @class */ (function () {
     };
     ParameterComponent.prototype.getValue = function () {
         if (this._value) {
+            console.log('GetValueValue: ' + this._value);
             return this._value;
         }
         else {
+            console.log('GetValueParameter: ' + this.parameter.value);
             return this.parameter.value;
         }
     };

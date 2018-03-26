@@ -8,19 +8,6 @@ namespace CMI.Contract.Parameter
 {
     public static class ParameterHelper
     {
-        public static string GetJsonStringOfParameter(IParameter parameter)
-        {
-            var paramList = GetParameterListFromParameter(parameter);
-
-            var jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(paramList);
-
-            if (jsonString == null)
-            {
-                throw new NullReferenceException();
-            }
-            return jsonString;
-        }
-
         public static Parameter[] GetParameterListFromParameter(IParameter parameter)
         {
             var paramList = new List<Parameter>();
@@ -40,12 +27,37 @@ namespace CMI.Contract.Parameter
             return paramList.ToArray();
         }
 
+        public static bool SaveParameter(IParameter parameter, Parameter[] parameters = null)
+        {
+            var path = GetParameterPath(parameter);
+            var jsonString = string.Empty;
+
+            if (parameters == null)
+            {
+                jsonString = GetJsonStringOfParameter(parameter);
+            }
+            if (parameters != null)
+            {
+                jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(parameters);
+            }
+            try
+            {
+                System.IO.File.WriteAllText(path, jsonString);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+            
+        }
+
         public static IParameter GetParameters(IParameter parameter)
         {
             var path = GetParameterPath(parameter);
             if (!System.IO.File.Exists(path))
             {
-                OverrideParameter(parameter);   
+                InitialSaveParameter(parameter);   
             }
             var jsonString = System.IO.File.ReadAllText(path);
             var paramList = Newtonsoft.Json.JsonConvert.DeserializeObject<Parameter[]>(jsonString);
@@ -63,11 +75,23 @@ namespace CMI.Contract.Parameter
             return parameter;
         }
 
-        public static void OverrideParameter(IParameter p)
+        private static void InitialSaveParameter(IParameter parameter)
         {
-            var path = GetParameterPath(p);
-            var jsonString = GetJsonStringOfParameter(p);
+            var path = GetParameterPath(parameter);
+            var jsonString = GetJsonStringOfParameter(parameter);
             System.IO.File.WriteAllText(path, jsonString);
+        }
+
+        private static string GetJsonStringOfParameter(IParameter parameter)
+        {
+            var paramList = GetParameterListFromParameter(parameter);
+            var jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(paramList);
+
+            if (jsonString == null)
+            {
+                throw new NullReferenceException();
+            }
+            return jsonString;
         }
 
         private static string GetParameterPath(IParameter p)
@@ -83,9 +107,14 @@ namespace CMI.Contract.Parameter
             var param = new Parameter
             {
                 Name = sufix + "." + fieldInfo.Name,
-                Value = GetValue(fieldInfo, parameter),
+                Value = fieldInfo.GetValue(parameter)?.ToString(),
                 Type = GetType(fieldInfo.FieldType)
             };
+
+            if (param.Name == null || param.Type == null)
+            {
+                return null;
+            }
 
             var attributes = fieldInfo.GetCustomAttributes(true);
             foreach (var attribute in attributes)
@@ -111,17 +140,7 @@ namespace CMI.Contract.Parameter
                     param.Description = descriptionAttribute.Description;
                 }
             }
-            if (param.Name == null || param.Type == null)
-            {
-                return null;
-            }
             return param;
-        }
-
-        private static string GetValue(FieldInfo fieldInfo, IParameter parameter)
-        {
-            var value = fieldInfo.GetValue(parameter);
-            return value?.ToString();
         }
 
         private static string GetType(Type type)

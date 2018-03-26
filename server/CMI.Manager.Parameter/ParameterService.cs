@@ -1,6 +1,4 @@
-﻿using System;
-using System.Threading;
-using CMI.Contract.Parameter;
+﻿using CMI.Contract.Parameter;
 using MassTransit;
 
 namespace CMI.Manager.Parameter
@@ -14,27 +12,25 @@ namespace CMI.Manager.Parameter
             {
                 cfg.ReceiveEndpoint("GetParameterQueue", ec =>
                 {
-                    ec.Consumer(() => new ParameterRequestConsumer());
+                    ec.Consumer(() => new GetParameterRequestConsumer());
                 });
-                cfg.ReceiveEndpoint("ResponseParameterEventQueue", ec =>
+                cfg.ReceiveEndpoint("GetResponseParameterEventQueue", ec =>
                 {
-                    ec.Consumer(() => new ParameterEventResponseConsumer());
+                    ec.Consumer(() => new GetParameterEventResponseConsumer());
+                });
+                cfg.ReceiveEndpoint("SaveParameterQueue", ec =>
+                {
+                    ec.Consumer(() => new SaveParameterRequestConsumer());
+                });
+                cfg.ReceiveEndpoint("SaveResponseParameterEventQueue", ec =>
+                {
+                    ec.Consumer(() => new SaveParameterEventResponseConsumer());
                 });
             });
             
             ParameterBus.Start();
-            /*do
-            {
-                PullSettings();
-            } while (true);
-            */
         }
 
-        public void PullSettings()
-        {
-            ParameterBus.Publish(new ParameterEvent {Type = "ParameterEvent"});
-            Thread.Sleep(10000);
-        }
         public void Stop()
         {
             ParameterBus.Stop();
