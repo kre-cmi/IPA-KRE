@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using CMI.Contract.Parameter.Attributes;
 
 namespace CMI.Contract.Parameter
@@ -27,8 +28,23 @@ namespace CMI.Contract.Parameter
             return paramList.ToArray();
         }
 
-        public static bool SaveParameter(IParameter parameter, Parameter[] parameters = null)
+        public static bool ValidateParameter(Parameter parameter)
         {
+            if (parameter.RegexValidation == null) return true;
+
+            var regex = new Regex(parameter.RegexValidation);
+            var match = regex.IsMatch(parameter.Value);
+            return match;
+        }
+        public static bool ValidateParameter(Parameter[] parameters)
+        {
+            return parameters.All(ValidateParameter);
+        }
+
+        public static bool SaveParameter(IParameter parameter, Parameter[] parameters)
+        {
+            if (!ValidateParameter(parameters)) return false;
+
             var path = GetParameterPath(parameter);
             var jsonString = string.Empty;
 
@@ -49,7 +65,6 @@ namespace CMI.Contract.Parameter
             {
                 return false;
             }
-            
         }
 
         public static IParameter GetParameters(IParameter parameter)
@@ -61,11 +76,11 @@ namespace CMI.Contract.Parameter
             }
             var jsonString = System.IO.File.ReadAllText(path);
             var paramList = Newtonsoft.Json.JsonConvert.DeserializeObject<Parameter[]>(jsonString);
-            var nameSufix = parameter.GetType().Namespace;
+            var namePrefix = parameter.GetType().Namespace;
 
             foreach (var fieldInfo in parameter.GetType().GetFields())
             {
-                var value = paramList.First(p => p.Name == nameSufix + "." + fieldInfo.Name)?.Value;
+                var value = paramList.First(p => p.Name == namePrefix + "." + fieldInfo.Name)?.Value;
                 if (value != null)
                 {
                     fieldInfo.SetValue(parameter, Convert.ChangeType(value, fieldInfo.FieldType));
@@ -102,19 +117,16 @@ namespace CMI.Contract.Parameter
             return Uri.UnescapeDataString(uri.Path);
         }
 
-        private static Parameter CreateParameter(FieldInfo fieldInfo, IParameter parameter, string sufix)
+        private static Parameter CreateParameter(FieldInfo fieldInfo, IParameter parameter, string prefix)
         {
             var param = new Parameter
             {
-                Name = sufix + "." + fieldInfo.Name,
+                Name = prefix + "." + fieldInfo.Name,
                 Value = fieldInfo.GetValue(parameter)?.ToString(),
                 Type = GetType(fieldInfo.FieldType)
             };
 
-            if (param.Name == null || param.Type == null)
-            {
-                return null;
-            }
+            if (param.Name == null || param.Type == null) return null;
 
             var attributes = fieldInfo.GetCustomAttributes(true);
             foreach (var attribute in attributes)
@@ -129,15 +141,15 @@ namespace CMI.Contract.Parameter
                 }
                 if (defaultAttribute != null)
                 {
-                    param.Default = defaultAttribute.Default;
+                    param.Default = defaultAttribute?.Default;
                 }
                 if (validationAttribute != null)
                 {
-                    param.RegexValidation = validationAttribute.Regex;
+                    param.RegexValidation = validationAttribute?.Regex;
                 }
                 if (descriptionAttribute != null)
                 {
-                    param.Description = descriptionAttribute.Description;
+                    param.Description = descriptionAttribute?.Description;
                 }
             }
             return param;

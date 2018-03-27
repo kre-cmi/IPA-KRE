@@ -1,9 +1,23 @@
 <div *ngIf="!loading">
 	<h1>Zentralisierte Parameterverwaltung</h1>
-	<div *ngFor="let param of parameters">
-		<cmi-viaduc-parameter [parameter]="param"></cmi-viaduc-parameter>
+	<div [class]="getClass">
+		Der Parameter wurde erfolgreich gespeichert.
+	</div>
+	<div class="row">
+		<div class="col-md-4">
+			<input type="text" class="form-control" [value]="searchString" (change)="onValueChanged($event)"/>
+		</div>
+		<div class="col-md-1">
+			<input type="button" (click)="searchParam()" value="Suchen" class="btn"/>
+		</div>
+	</div>
+	<input type="button" (click)="emitValidationEvent()" value="Validieren" class="btn"/>
+	<div *ngFor="let param of filteredParameters">
+		<cmi-viaduc-parameter [parameter]="param" [validationEvent]="validationEvent"></cmi-viaduc-parameter>
 	</div>
 </div>
-<cmi-blocker *ngIf="loading">
-	<cmi-loader></cmi-loader>
-</cmi-blocker>
+<div *ngIf="loading">
+	<cmi-blocker class="cmi-visible cmi-fixed cmi-center cmi-shadow">
+		<cmi-spinner></cmi-spinner>
+	</cmi-blocker>
+</div>

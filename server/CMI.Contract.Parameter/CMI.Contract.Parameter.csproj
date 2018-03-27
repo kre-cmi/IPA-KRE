@@ -73,6 +73,7 @@
     <Compile Include="Parameter.cs" />
     <Compile Include="GetParameter\GetParameterEvent.cs" />
     <Compile Include="GetParameter\GetParameterEventResponse.cs" />
+    <Compile Include="ParameterBusHelper.cs" />
     <Compile Include="ParameterHelper.cs" />
     <Compile Include="GetParameter\GetParameterRequest.cs" />
     <Compile Include="GetParameter\GetParameterResponse.cs" />

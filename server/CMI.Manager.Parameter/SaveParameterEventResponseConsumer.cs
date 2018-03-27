@@ -9,8 +9,16 @@ namespace CMI.Manager.Parameter
     {
         public async Task Consume(ConsumeContext<SaveParameterEventResponse> context)
         {
-            //Put success here
-            await Console.Out.WriteLineAsync("Saved Successfully");
+            ParameterRequestResponseHelper.SavedSuccessfully = context.Message.Success;
+            if (context.Message.Success)
+            {
+                await Console.Out.WriteLineAsync("Saved Successfully");
+            }
+            else
+            {
+                await Console.Out.WriteLineAsync("An Error has occured while saving!");
+            }
+            
         }
     }
 }

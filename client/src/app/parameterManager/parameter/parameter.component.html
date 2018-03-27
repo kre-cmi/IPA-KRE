@@ -1,4 +1,4 @@
-<div *ngIf="parameter" class="parameter-list row" [title]="parameter.description">
+<div *ngIf="parameter" [class]="getClass()" [title]="parameter.description ? parameter.description : ''">
 	<div class="col-md-3">
 		Name: {{parameter.name}}
 	</div>
@@ -6,7 +6,7 @@
 		Default: {{parameter.default}}
 	</div>
 	<div class="col-md-4">
-		Value: <input class="form-control" [type]="parameter.type" (click)="onFocus()" (change)="onValueChanged($event)" [checked]="getChecked()" [value]="getValue()">
+		Value: <input class="form-control" [type]="parameter.type" (focus)="onFocus()" (change)="onValueChanged($event)" [checked]="checked" [value]="value">
 	</div>
 	<div *ngIf="active" class="col-md-2">
 		<input type="button" class="btn" value="Speichern" (click)="saveParameter()">

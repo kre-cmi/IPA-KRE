@@ -711,7 +711,7 @@ exports.NavigationComponent = NavigationComponent;
 /***/ "../../../../../src/app/parameterManager/parameter/parameter.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"parameter\" class=\"parameter-list row\" [title]=\"parameter.description\">\r\n\t<div class=\"col-md-3\">\r\n\t\tName: {{parameter.name}}\r\n\t</div>\r\n\t<div class=\"col-md-3\">\r\n\t\tDefault: {{parameter.default}}\r\n\t</div>\r\n\t<div class=\"col-md-4\">\r\n\t\tValue: <input class=\"form-control\" [type]=\"parameter.type\" (click)=\"onFocus()\" (change)=\"onValueChanged($event)\" [checked]=\"getChecked()\" [value]=\"getValue()\">\r\n\t</div>\r\n\t<div *ngIf=\"active\" class=\"col-md-2\">\r\n\t\t<input type=\"button\" class=\"btn\" value=\"Speichern\" (click)=\"saveParameter()\">\r\n\t\t<input type=\"button\" class=\"btn\" value=\"Abbrechen\" (click)=\"cancelEdit()\">\r\n\t</div>\r\n</div>\r\n"
+module.exports = "<div *ngIf=\"parameter\" [class]=\"getClass()\" [title]=\"parameter.description ? parameter.description : ''\">\r\n\t<div class=\"col-md-3\">\r\n\t\tName: {{parameter.name}}\r\n\t</div>\r\n\t<div class=\"col-md-3\">\r\n\t\tDefault: {{parameter.default}}\r\n\t</div>\r\n\t<div class=\"col-md-4\">\r\n\t\tValue: <input class=\"form-control\" [type]=\"parameter.type\" (focus)=\"onFocus()\" (change)=\"onValueChanged($event)\" [checked]=\"checked\" [value]=\"value\">\r\n\t</div>\r\n\t<div *ngIf=\"active\" class=\"col-md-2\">\r\n\t\t<input type=\"button\" class=\"btn\" value=\"Speichern\" (click)=\"saveParameter()\">\r\n\t\t<input type=\"button\" class=\"btn\" value=\"Abbrechen\" (click)=\"cancelEdit()\">\r\n\t</div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -723,7 +723,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".parameter-list {\n  border-bottom: 1px solid #ddd;\n  border-top: 1px solid #ddd;\n  margin-left: 5px;\n  margin-right: 5px;\n}\n.parameter-list div .form-control[type='text'] {\n  display: initial;\n  width: calc(100% - 50px);\n}\n.parameter-list div .form-control[type='checkbox'] {\n  display: initial;\n  width: auto;\n}\n", ""]);
+exports.push([module.i, ".parameter-list {\n  border-bottom: 1px solid #ddd;\n  border-top: 1px solid #ddd;\n  margin-left: 5px;\n  margin-right: 5px;\n}\n.parameter-list div .form-control[type='text'] {\n  display: initial;\n  width: calc(100% - 50px);\n}\n.parameter-list div .form-control[type='checkbox'] {\n  display: initial;\n  width: auto;\n}\n.parameter-list div[class*=col-] {\n  margin-top: 1em;\n  margin-bottom: 1em;\n}\n", ""]);
 
 // exports
 
@@ -754,16 +754,20 @@ var Subject_1 = __webpack_require__("../../../../rxjs/_esm5/Subject.js");
 var ParameterComponent = /** @class */ (function () {
     function ParameterComponent(_paramService) {
         this._paramService = _paramService;
+        this.validationEvent = new core_1.EventEmitter();
         this.active = false;
     }
     ParameterComponent_1 = ParameterComponent;
     ParameterComponent.prototype.ngOnInit = function () {
         var _this = this;
-        ParameterComponent_1._onChanged.subscribe(function (name) {
-            if (_this.active && _this.parameter.name !== name) {
-                _this.active = false;
-            }
+        ParameterComponent_1._onFocusChange.subscribe(function () {
+            _this.cancelEdit();
         });
+        this.validationEvent.subscribe(function () {
+            _this.validationError = !_this._isValid();
+        });
+        this.value = this.parameter.value;
+        this.checked = this.parameter.value === 'True';
     };
     ParameterComponent.prototype.onValueChanged = function (event) {
         if (this.parameter.type === 'checkbox') {
@@ -773,51 +777,57 @@ var ParameterComponent = /** @class */ (function () {
             }
         }
         else {
-            this._newValue = event.target.value;
+            this.value = event.target.value;
         }
     };
     ParameterComponent.prototype.onFocus = function () {
-        ParameterComponent_1._onChanged.next(this.parameter.name);
+        ParameterComponent_1._onFocusChange.next();
         this.active = true;
     };
     ParameterComponent.prototype.saveParameter = function () {
-        console.log('New Value: ' + this._newValue);
-        this.parameter.value = this._newValue;
-        this._paramService.saveParameter(this.parameter);
+        var _this = this;
+        if (this.parameter.type === 'checkbox') {
+            this.parameter.value = this.checked.toString();
+        }
+        else {
+            this.parameter.value = this.value;
+        }
+        this.validationError = !this._isValid();
+        if (!this.validationError) {
+            this._paramService.saveParameter(this.parameter).then(function (success) { return _this.validationError = !success; });
+        }
     };
     ParameterComponent.prototype.cancelEdit = function () {
-        this._newValue = null;
+        this.value = this.parameter.value;
         if (this.parameter.type === 'checkbox') {
             this.checked = this.parameter.value === 'True';
         }
         else {
-            this._value = this.parameter.value;
+            this.value = this.parameter.value;
         }
         this.active = false;
     };
-    ParameterComponent.prototype.getValue = function () {
-        if (this._value) {
-            console.log('GetValueValue: ' + this._value);
-            return this._value;
+    ParameterComponent.prototype._isValid = function () {
+        if (this.parameter && this.parameter.regexValidation && this.parameter.value) {
+            var matches = this.parameter.value.match(this.parameter.regexValidation);
+            return !!(matches && matches[0] !== null);
         }
         else {
-            console.log('GetValueParameter: ' + this.parameter.value);
-            return this.parameter.value;
+            return true;
         }
     };
-    ParameterComponent.prototype.getChecked = function () {
-        if (this.checked) {
-            return this.checked;
-        }
-        else {
-            return this.parameter.value === 'True';
-        }
+    ParameterComponent.prototype.getClass = function () {
+        return this.validationError ? 'parameter-list row alert-danger' : 'parameter-list row';
     };
-    ParameterComponent._onChanged = new Subject_1.Subject();
+    ParameterComponent._onFocusChange = new Subject_1.Subject();
     __decorate([
         core_1.Input(),
         __metadata("design:type", Object)
     ], ParameterComponent.prototype, "parameter", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", core_1.EventEmitter)
+    ], ParameterComponent.prototype, "validationEvent", void 0);
     ParameterComponent = ParameterComponent_1 = __decorate([
         core_1.Component({
             selector: 'cmi-viaduc-parameter',
@@ -837,7 +847,7 @@ exports.ParameterComponent = ParameterComponent;
 /***/ "../../../../../src/app/parameterManager/parameterList/parameterList.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"!loading\">\r\n\t<h1>Zentralisierte Parameterverwaltung</h1>\r\n\t<div *ngFor=\"let param of parameters\">\r\n\t\t<cmi-viaduc-parameter [parameter]=\"param\"></cmi-viaduc-parameter>\r\n\t</div>\r\n</div>\r\n<cmi-blocker *ngIf=\"loading\">\r\n\t<cmi-loader></cmi-loader>\r\n</cmi-blocker>\r\n"
+module.exports = "<div *ngIf=\"!loading\">\r\n\t<h1>Zentralisierte Parameterverwaltung</h1>\r\n\t<div [class]=\"getClass\">\r\n\t\tDer Parameter wurde erfolgreich gespeichert.\r\n\t</div>\r\n\t<div class=\"row\">\r\n\t\t<div class=\"col-md-4\">\r\n\t\t\t<input type=\"text\" class=\"form-control\" [value]=\"searchString\" (change)=\"onValueChanged($event)\"/>\r\n\t\t</div>\r\n\t\t<div class=\"col-md-1\">\r\n\t\t\t<input type=\"button\" (click)=\"searchParam()\" value=\"Suchen\" class=\"btn\"/>\r\n\t\t</div>\r\n\t</div>\r\n\t<input type=\"button\" (click)=\"emitValidationEvent()\" value=\"Validieren\" class=\"btn\"/>\r\n\t<div *ngFor=\"let param of filteredParameters\">\r\n\t\t<cmi-viaduc-parameter [parameter]=\"param\" [validationEvent]=\"validationEvent\"></cmi-viaduc-parameter>\r\n\t</div>\r\n</div>\r\n<div *ngIf=\"loading\">\r\n\t<cmi-blocker class=\"cmi-visible cmi-fixed cmi-center cmi-shadow\">\r\n\t\t<cmi-spinner></cmi-spinner>\r\n\t</cmi-blocker>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -849,7 +859,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, ".btn {\n  margin-bottom: 1em;\n}\n.no-display {\n  display: none;\n}\n.row .col-md-1 {\n  padding: 0;\n}\n.row .col-md-4 {\n  padding-right: 0;\n}\ncmi-blocker cmi-spinner {\n  width: 50%;\n  height: 50%;\n  overflow: auto;\n  margin: auto;\n  position: fixed;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  top: 40%;\n}\n", ""]);
 
 // exports
 
@@ -915,22 +925,55 @@ var ParameterListComponent = /** @class */ (function () {
     function ParameterListComponent(_params) {
         this._params = _params;
         this.loading = true;
-        this.parameters = [];
+        this.filteredParameters = [];
+        this._allParameters = [];
+        this.validationEvent = new core_1.EventEmitter();
+        this.searchString = '';
         this.getAllParameters();
-        console.log('done');
     }
     ParameterListComponent.prototype.getAllParameters = function () {
         return __awaiter(this, void 0, void 0, function () {
             var _this = this;
             return __generator(this, function (_a) {
                 this._params.getAllParameters().then(function (response) {
-                    _this.parameters = response;
-                    console.log(_this.parameters);
+                    _this._allParameters = response;
+                    _this.filteredParameters = _this._allParameters;
                     _this.loading = false;
                 });
                 return [2 /*return*/];
             });
         });
+    };
+    ParameterListComponent.prototype.onValueChanged = function (event) {
+        this.searchString = event.target.value;
+    };
+    ParameterListComponent.prototype.emitValidationEvent = function () {
+        this.validationEvent.emit();
+    };
+    ParameterListComponent.prototype.getClass = function () {
+        if (this.savedSuccessfull === true) {
+            return 'alert alert-success fade in';
+        }
+        else if (this.savedSuccessfull === false) {
+            return 'alert alert-danger fade in';
+        }
+        else {
+            return 'no-display';
+        }
+    };
+    ParameterListComponent.prototype.searchParam = function () {
+        var _this = this;
+        this.filteredParameters = [];
+        if (this.searchString !== '') {
+            console.log('search string found!');
+            this.filteredParameters = this._allParameters.filter(function (param) {
+                return param.name.toLowerCase().indexOf(_this.searchString.toLowerCase()) !== -1 || param.value.toLowerCase().indexOf(_this.searchString.toLowerCase()) !== -1;
+            });
+        }
+        else {
+            console.log('search string not found!');
+            this.filteredParameters = this._allParameters;
+        }
     };
     ParameterListComponent = __decorate([
         core_1.Component({

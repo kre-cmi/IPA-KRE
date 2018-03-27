@@ -11,13 +11,17 @@ namespace CMI.Manager.Parameter
     {
         public Task Consume(ConsumeContext<GetParameterRequest> context)
         {
-            ParameterHelper.Parameters = new List<Contract.Parameter.Parameter>();
+            ParameterRequestResponseHelper.Parameters = new List<Contract.Parameter.Parameter>();
             ParameterService.ParameterBus.Publish(new GetParameterEvent());
             Console.Out.WriteLineAsync("Get Event started");
             Thread.Sleep(400);
+            if (ParameterRequestResponseHelper.Parameters.Count == 0)
+            {
+                Thread.Sleep(6000);
+            }
             context.RespondAsync(new GetParameterResponse()
             {
-                Parameters = ParameterHelper.Parameters.ToArray()
+                Parameters = ParameterRequestResponseHelper.Parameters.ToArray()
             });
             return Console.Out.WriteLineAsync("Get Event response sent");
         }

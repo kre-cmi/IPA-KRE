@@ -67,7 +67,7 @@
   <ItemGroup>
     <Compile Include="SaveParameterEventResponseConsumer.cs" />
     <Compile Include="GetParameterEventResponseConsumer.cs" />
-    <Compile Include="ParameterHelper.cs" />
+    <Compile Include="ParameterRequestResponseHelper.cs" />
     <Compile Include="GetParameterRequestConsumer.cs" />
     <Compile Include="ParameterService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -9,7 +9,7 @@ namespace CMI.Manager.Parameter
     {
         public async Task Consume(ConsumeContext<GetParameterEventResponse> context)
         {
-            ParameterHelper.Parameters.AddRange(context.Message.Parameters);
+            ParameterRequestResponseHelper.Parameters.AddRange(context.Message.Parameters);
             await Console.Out.WriteLineAsync("Parameter Recived");
         }
     }

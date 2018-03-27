@@ -11,13 +11,17 @@ namespace CMI.Manager.Parameter
     {
         public Task Consume(ConsumeContext<SaveParameterRequest> context)
         {
-            ParameterHelper.Parameters = new List<Contract.Parameter.Parameter>();
+            ParameterRequestResponseHelper.SavedSuccessfully = null;
             ParameterService.ParameterBus.Publish(new SaveParameterEvent(context.Message.Parameter));
             Console.Out.WriteLineAsync("Save Event started");
             Thread.Sleep(400);
+            if (ParameterRequestResponseHelper.SavedSuccessfully == null)
+            {
+                Thread.Sleep(6000);
+            }
             context.RespondAsync(new SaveParameterResponse()
             {
-                Success = true
+                Success = ParameterRequestResponseHelper.SavedSuccessfully == true
             });
             return Console.Out.WriteLineAsync("Save Event response sent");
         }

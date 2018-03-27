@@ -1,6 +1,7 @@
 ﻿using System;
 using CMI.Contract.Parameter;
 using CMI.Contract.Parameter.GetParameter;
+using CMI.Contract.Parameter.SaveParameter;
 using MassTransit;
 
 namespace CMI.Manager.ExampleServiceB
@@ -16,11 +17,20 @@ namespace CMI.Manager.ExampleServiceB
                 {
                     ep.Handler<GetParameterEvent>(context =>
                     {
-                        //ParameterBus.Publish(new ParameterEventResponse { Parameters = "Example Service B Response" });
-                        return Console.Out.WriteLineAsync("response sent from Parameter Service B!");
+                        ParameterBusHelper.SubscribeGetEvent<ExampleParameterB>(ParameterBus);
+                        return Console.Out.WriteLineAsync("Get Parameters");
+                    });
+                });
+                cfg.ReceiveEndpoint(host, "SaveParametersB", ep =>
+                {
+                    ep.Handler<SaveParameterEvent>(context =>
+                    {
+                        ParameterBusHelper.SubscribeSaveEvent<ExampleParameterB>(ParameterBus, context.Message.Parameter);
+                        return Console.Out.WriteLineAsync("Saved Parameter");
                     });
                 });
             });
+
             ParameterBus.Start();
 
         }
