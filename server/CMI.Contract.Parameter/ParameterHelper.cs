@@ -9,13 +9,13 @@ namespace CMI.Contract.Parameter
 {
     public static class ParameterHelper
     {
-        public static Parameter[] GetParameterListFromParameter(IParameter parameter)
+        public static Parameter[] GetParameterListFromSetting(ISetting setting)
         {
             var paramList = new List<Parameter>();
-            var nameSufix = parameter.GetType().Namespace;
-            foreach (var fieldInfo in parameter.GetType().GetFields())
+            var nameSufix = setting.GetType().Namespace;
+            foreach (var fieldInfo in setting.GetType().GetFields())
             {
-                var param = CreateParameter(fieldInfo, parameter, nameSufix);
+                var param = CreateParameter(fieldInfo, setting, nameSufix);
                 if (param.Name != null)
                 {
                     paramList.Add(param);
@@ -31,8 +31,13 @@ namespace CMI.Contract.Parameter
         public static bool ValidateParameter(Parameter parameter)
         {
             if (parameter.RegexValidation == null) return true;
+            if (parameter.Value == null)
+            {
+                return !parameter.Mandatory;
+            }
 
             var regex = new Regex(parameter.RegexValidation);
+
             var match = regex.IsMatch(parameter.Value);
             return match;
         }
@@ -41,16 +46,16 @@ namespace CMI.Contract.Parameter
             return parameters.All(ValidateParameter);
         }
 
-        public static bool SaveParameter(IParameter parameter, Parameter[] parameters)
+        public static bool SaveSetting(ISetting setting, Parameter[] parameters)
         {
             if (!ValidateParameter(parameters)) return false;
 
-            var path = GetParameterPath(parameter);
+            var path = GetSettingPath(setting);
             var jsonString = string.Empty;
 
             if (parameters == null)
             {
-                jsonString = GetJsonStringOfParameter(parameter);
+                jsonString = GetJsonStringOfSetting(setting);
             }
             if (parameters != null)
             {
@@ -67,39 +72,39 @@ namespace CMI.Contract.Parameter
             }
         }
 
-        public static IParameter GetParameters(IParameter parameter)
+        public static ISetting GetSetting(ISetting setting)
         {
-            var path = GetParameterPath(parameter);
+            var path = GetSettingPath(setting);
             if (!System.IO.File.Exists(path))
             {
-                InitialSaveParameter(parameter);   
+                InitialSaveSetting(setting);   
             }
             var jsonString = System.IO.File.ReadAllText(path);
             var paramList = Newtonsoft.Json.JsonConvert.DeserializeObject<Parameter[]>(jsonString);
-            var namePrefix = parameter.GetType().Namespace;
+            var namePrefix = setting.GetType().Namespace;
 
-            foreach (var fieldInfo in parameter.GetType().GetFields())
+            foreach (var fieldInfo in setting.GetType().GetFields())
             {
                 var value = paramList.First(p => p.Name == namePrefix + "." + fieldInfo.Name)?.Value;
                 if (value != null)
                 {
-                    fieldInfo.SetValue(parameter, Convert.ChangeType(value, fieldInfo.FieldType));
+                    fieldInfo.SetValue(setting, Convert.ChangeType(value, fieldInfo.FieldType));
                 }
             }
 
-            return parameter;
+            return setting;
         }
 
-        private static void InitialSaveParameter(IParameter parameter)
+        private static void InitialSaveSetting(ISetting setting)
         {
-            var path = GetParameterPath(parameter);
-            var jsonString = GetJsonStringOfParameter(parameter);
+            var path = GetSettingPath(setting);
+            var jsonString = GetJsonStringOfSetting(setting);
             System.IO.File.WriteAllText(path, jsonString);
         }
 
-        private static string GetJsonStringOfParameter(IParameter parameter)
+        private static string GetJsonStringOfSetting(ISetting setting)
         {
-            var paramList = GetParameterListFromParameter(parameter);
+            var paramList = GetParameterListFromSetting(setting);
             var jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(paramList);
 
             if (jsonString == null)
@@ -109,20 +114,20 @@ namespace CMI.Contract.Parameter
             return jsonString;
         }
 
-        private static string GetParameterPath(IParameter p)
+        private static string GetSettingPath(ISetting s)
         {
-            var fullPath = p.GetType().Assembly.CodeBase;
-            var path = fullPath.Replace(fullPath.Split('/').Last(), "parameters.json");
+            var fullPath = s.GetType().Assembly.CodeBase;
+            var path = fullPath.Replace(fullPath.Split('/').Last(), "setting.json");
             var uri = new UriBuilder(path);
             return Uri.UnescapeDataString(uri.Path);
         }
 
-        private static Parameter CreateParameter(FieldInfo fieldInfo, IParameter parameter, string prefix)
+        private static Parameter CreateParameter(FieldInfo fieldInfo, ISetting setting, string prefix)
         {
             var param = new Parameter
             {
                 Name = prefix + "." + fieldInfo.Name,
-                Value = fieldInfo.GetValue(parameter)?.ToString(),
+                Value = fieldInfo.GetValue(setting)?.ToString(),
                 Type = GetType(fieldInfo.FieldType)
             };
 
@@ -161,7 +166,7 @@ namespace CMI.Contract.Parameter
             {
                 return "checkbox";
             }
-            if (type.Name == "int32" || type.Name == "Double" || type.Name == "Float" || type.Name == "int64" || type.Name == "Long")
+            if (type.Name == "Int32" || type.Name == "Double" || type.Name == "Float" || type.Name == "Int64" || type.Name == "Long")
             {
                 return "number";
             }

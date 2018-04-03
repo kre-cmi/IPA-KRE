@@ -13,19 +13,23 @@ export class ParameterComponent implements OnInit {
 	public parameter: Parameter;
 	@Input()
 	public validationEvent: EventEmitter<void> = new EventEmitter<void>();
+	@Input()
+	public searchString: string;
 
 	public active: boolean = false;
 	public value: string;
 	public checked: boolean;
 	public validationError: boolean;
-	private static _onFocusChange: Subject<void> = new Subject();
+	private static _onFocusChange: Subject<string> = new Subject();
 
 	constructor (private _paramService: ParameterService) {
 	}
 
 	public ngOnInit() {
-		ParameterComponent._onFocusChange.subscribe(() => {
+		ParameterComponent._onFocusChange.subscribe((name) => {
+			if (name !== this.parameter.name) {
 				this.cancelEdit();
+			}
 		});
 		this.validationEvent.subscribe(() => {
 			this.validationError = !this._isValid();
@@ -46,18 +50,18 @@ export class ParameterComponent implements OnInit {
 	}
 
 	public onFocus() {
-		ParameterComponent._onFocusChange.next();
+		ParameterComponent._onFocusChange.next(this.parameter.name);
 		this.active = true;
 	}
 
 	public saveParameter() {
-		if (this.parameter.type === 'checkbox') {
-			this.parameter.value = this.checked.toString();
-		} else {
-			this.parameter.value = this.value;
-		}
-		this.validationError = !this._isValid();
-		if (!this.validationError) {
+		this.validationError = !this._validateString(this.value);
+		if (this.validationError === false) {
+			if (this.parameter.type === 'checkbox') {
+				this.parameter.value = this.checked.toString();
+			} else {
+				this.parameter.value = this.value;
+			}
 			this._paramService.saveParameter(this.parameter).then( success => this.validationError = !success);
 		}
 	}
@@ -73,15 +77,31 @@ export class ParameterComponent implements OnInit {
 	}
 
 	private _isValid(): boolean {
-		if (this.parameter && this.parameter.regexValidation && this.parameter.value) {
-			let matches = this.parameter.value.match(this.parameter.regexValidation);
-			return !!(matches && matches[0] !== null);
+		return this._validateString(this.parameter.value);
+	}
+
+	private _validateString(value: string): boolean {
+		if (!value && this.parameter.mandatory === true) {
+			return false;
+		}
+		if (this.parameter && this.parameter.regexValidation && value) {
+			let matches = value.match(this.parameter.regexValidation);
+			return (matches && matches[0] !== null);
 		} else {
 			return true;
 		}
 	}
 
-	public getClass(): string {
+	public getErrorClass(): string {
 		return this.validationError ? 'parameter-list row alert-danger' : 'parameter-list row';
+	}
+
+	public getInputClass(): string {
+		if (this.value && this.searchString) {
+			if (this.value.toLowerCase().indexOf(this.searchString.toLowerCase()) !== -1) {
+				return 'form-control highlighted';
+			}
+		}
+		return 'form-control';
 	}
 }

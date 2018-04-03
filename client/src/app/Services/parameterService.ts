@@ -10,9 +10,9 @@ export class ParameterService {
 		let url = this._createBaseUrl() + '/GetAllParameters';
 		return await this._http.get<Parameter[]>(url, this._http.noCaching).toPromise();
 	}
+
 	public async saveParameter(param: Parameter) {
 		let url = this._createBaseUrl() + '/SaveParameter';
-		console.log('saveparam: - ' + param.value);
 		return await this._http.post<void>(url, param, this._http.noCaching).toPromise();
 	}
 
@@ -20,7 +20,6 @@ export class ParameterService {
 		let loc = window.location;
 		let port = isNaN(parseInt(loc.port, 10)) ? undefined : parseInt(loc.port, 10);
 		let baseUrl = '' + loc.protocol + '//' + loc.hostname + (port ? ':' + port : '') + '/ipa/Controllers';
-		console.log(baseUrl);
 		return baseUrl;
 	}
 }

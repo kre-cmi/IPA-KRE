@@ -25,10 +25,5 @@ namespace CMI.Contract.Parameter
                 registrationAction?.Invoke(cfg, host);
             });
         }
-
-        public static void ConfigureDefaultRetryPolicy(IRetryConfigurator retryPolicy)
-        {
-            retryPolicy.Exponential(10, TimeSpan.FromSeconds(1), TimeSpan.FromMinutes(5), TimeSpan.FromSeconds(5));
-        }
     }
 }

@@ -16,7 +16,8 @@ namespace CMI.Web.Management.Controllers
         [HttpGet]
         public IHttpActionResult GetAllParameters()
         {
-            var requestClient = BusHelper.ParameterBus.CreateRequestClient<GetParameterRequest, GetParameterResponse>(new Uri(BusHelper.ParameterBus.Address, "GetParameterQueue"), TimeSpan.FromSeconds(15));
+            var uri = new Uri(BusHelper.ParameterBus.Address, "GetParameterQueue");
+            var requestClient = BusHelper.ParameterBus.CreateRequestClient<GetParameterRequest, GetParameterResponse>(uri, TimeSpan.FromSeconds(20));
             var result = requestClient.Request(new GetParameterRequest()).GetAwaiter().GetResult();
             
             return Ok(result.Parameters);
@@ -26,7 +27,8 @@ namespace CMI.Web.Management.Controllers
         [HttpPost]
         public IHttpActionResult SaveParameter(Parameter parameter)
         {
-            var requestClient = BusHelper.ParameterBus.CreateRequestClient<SaveParameterRequest, SaveParameterResponse>(new Uri(BusHelper.ParameterBus.Address, "SaveParameterQueue"), TimeSpan.FromSeconds(700));
+            var uri = new Uri(BusHelper.ParameterBus.Address, "SaveParameterQueue");
+            var requestClient = BusHelper.ParameterBus.CreateRequestClient<SaveParameterRequest, SaveParameterResponse>(uri, TimeSpan.FromSeconds(20));
             var result = requestClient.Request(new SaveParameterRequest(parameter)).GetAwaiter().GetResult();
             return Ok(result.Success);
         }

@@ -12,8 +12,8 @@ export class ParameterListComponent {
 	public filteredParameters: Parameter[] = [];
 	private _allParameters: Parameter[] = [];
 	public validationEvent: EventEmitter<void> = new EventEmitter<void>();
-	public savedSuccessfull: boolean;
 	public searchString: string = '';
+	public searchedStringUpToDate: boolean;
 
 	constructor(private _params: ParameterService) {
 		this.getAllParameters();
@@ -29,28 +29,21 @@ export class ParameterListComponent {
 
 	public onValueChanged(event: any) {
 		this.searchString = event.target.value;
+		if (this.searchString) {
+			this.searchedStringUpToDate = false;
+		}
 	}
 
 	public emitValidationEvent() {
 		this.validationEvent.emit();
 	}
 
-	public getClass(): string {
-		if (this.savedSuccessfull === true) {
-			return 'alert alert-success fade in';
-		} else if (this.savedSuccessfull === false) {
-			return 'alert alert-danger fade in';
-		} else {
-			return 'no-display';
-		}
-	}
-
 	public searchParam() {
 		this.filteredParameters = [];
+		this.searchedStringUpToDate = true;
 		if (this.searchString !== '') {
-			console.log('search string found!');
 			this.filteredParameters = this._allParameters.filter((param) =>
-				param.name.toLowerCase().indexOf(this.searchString.toLowerCase()) !== -1 || param.value.toLowerCase().indexOf(this.searchString.toLowerCase()) !== -1
+				param.name.toLowerCase().indexOf(this.searchString.toLowerCase()) !== -1 || param.value && param.value.toLowerCase().indexOf(this.searchString.toLowerCase()) !== -1
 			);
 		} else {
 			console.log('search string not found!');

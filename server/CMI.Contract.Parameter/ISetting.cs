@@ -1,6 +1,6 @@
 ﻿namespace CMI.Contract.Parameter
 {
-    public interface IParameter
+    public interface ISetting
     {
     }
 }

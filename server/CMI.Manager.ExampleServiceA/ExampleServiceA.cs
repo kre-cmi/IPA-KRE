@@ -17,7 +17,7 @@ namespace CMI.Manager.ExampleServiceA
                 {
                     ep.Handler<GetParameterEvent>(context =>
                     {
-                        ParameterBusHelper.SubscribeGetEvent<ExampleParameterA>(ParameterBus);
+                        ParameterBusHelper.SubscribeGetEvent<ExampleSettingA>(ParameterBus);
                         return Console.Out.WriteLineAsync("Get Parameters");
                     });
                 });
@@ -25,7 +25,7 @@ namespace CMI.Manager.ExampleServiceA
                 {
                     ep.Handler<SaveParameterEvent>(context =>
                     {
-                        ParameterBusHelper.SubscribeSaveEvent<ExampleParameterA>(ParameterBus, context.Message.Parameter);
+                        ParameterBusHelper.SubscribeSaveEvent<ExampleSettingA>(ParameterBus, context.Message.Parameter);
                         return Console.Out.WriteLineAsync("Saved Parameter");
                     });
                 });

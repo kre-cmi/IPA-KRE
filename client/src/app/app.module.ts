@@ -15,6 +15,7 @@ import {FooterContentComponent} from './footer/content/footerContent.component';
 import {ClientModule} from './client.module';
 import {ParameterComponent} from './parameterManager/parameter/parameter.component';
 import {ParameterListComponent} from './parameterManager/parameterList/parameterList.component';
+import {HighlightComponent} from './highlight/highlight.component';
 
 @NgModule({
 	declarations: [
@@ -30,7 +31,8 @@ import {ParameterListComponent} from './parameterManager/parameterList/parameter
 		SpinnerComponent,
 		ProgressbarComponent,
 		ParameterComponent,
-		ParameterListComponent
+		ParameterListComponent,
+		HighlightComponent
 	],
 	imports: [
 		BrowserModule,

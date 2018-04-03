@@ -158,7 +158,6 @@ var ParameterService = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         url = this._createBaseUrl() + '/SaveParameter';
-                        console.log('saveparam: - ' + param.value);
                         return [4 /*yield*/, this._http.post(url, param, this._http.noCaching).toPromise()];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
@@ -169,7 +168,6 @@ var ParameterService = /** @class */ (function () {
         var loc = window.location;
         var port = isNaN(parseInt(loc.port, 10)) ? undefined : parseInt(loc.port, 10);
         var baseUrl = '' + loc.protocol + '//' + loc.hostname + (port ? ':' + port : '') + '/ipa/Controllers';
-        console.log(baseUrl);
         return baseUrl;
     };
     ParameterService = __decorate([
@@ -211,6 +209,7 @@ var footerContent_component_1 = __webpack_require__("../../../../../src/app/foot
 var client_module_1 = __webpack_require__("../../../../../src/app/client.module.ts");
 var parameter_component_1 = __webpack_require__("../../../../../src/app/parameterManager/parameter/parameter.component.ts");
 var parameterList_component_1 = __webpack_require__("../../../../../src/app/parameterManager/parameterList/parameterList.component.ts");
+var highlight_component_1 = __webpack_require__("../../../../../src/app/highlight/highlight.component.ts");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -229,7 +228,8 @@ var AppModule = /** @class */ (function () {
                 spinner_component_1.SpinnerComponent,
                 progressbar_component_1.ProgressbarComponent,
                 parameter_component_1.ParameterComponent,
-                parameterList_component_1.ParameterListComponent
+                parameterList_component_1.ParameterListComponent,
+                highlight_component_1.HighlightComponent
             ],
             imports: [
                 platform_browser_1.BrowserModule,
@@ -519,6 +519,89 @@ exports.HeaderComponent = HeaderComponent;
 
 /***/ }),
 
+/***/ "../../../../../src/app/highlight/highlight.component.html":
+/***/ (function(module, exports) {
+
+module.exports = "<span [innerHTML]=\"getInnerHTML()\">\r\n\r\n</span>\r\n"
+
+/***/ }),
+
+/***/ "../../../../../src/app/highlight/highlight.component.less":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/highlight/highlight.component.ts":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var core_1 = __webpack_require__("../../../core/esm5/core.js");
+var HighlightComponent = /** @class */ (function () {
+    function HighlightComponent() {
+    }
+    HighlightComponent.prototype.getInnerHTML = function () {
+        if (this.text && this.highlight) {
+            var position = this.text.toLowerCase().indexOf(this.highlight.toLowerCase());
+            if (position !== -1) {
+                var innerHTML = '', replaceString = this.text.substr(position, this.highlight.length), split = this.text.split(replaceString), last = split.pop();
+                for (var _i = 0, split_1 = split; _i < split_1.length; _i++) {
+                    var s = split_1[_i];
+                    innerHTML += s;
+                    innerHTML += '<ins>' + replaceString + '</ins>';
+                }
+                innerHTML += last;
+                return innerHTML;
+            }
+        }
+        return this.text;
+    };
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], HighlightComponent.prototype, "highlight", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], HighlightComponent.prototype, "text", void 0);
+    HighlightComponent = __decorate([
+        core_1.Component({
+            selector: 'cmi-viaduc-highlight',
+            template: __webpack_require__("../../../../../src/app/highlight/highlight.component.html"),
+            styles: [__webpack_require__("../../../../../src/app/highlight/highlight.component.less")]
+        }),
+        __metadata("design:paramtypes", [])
+    ], HighlightComponent);
+    return HighlightComponent;
+}());
+exports.HighlightComponent = HighlightComponent;
+
+
+/***/ }),
+
 /***/ "../../../../../src/app/navigation/content/navigationContent.component.html":
 /***/ (function(module, exports) {
 
@@ -711,7 +794,7 @@ exports.NavigationComponent = NavigationComponent;
 /***/ "../../../../../src/app/parameterManager/parameter/parameter.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"parameter\" [class]=\"getClass()\" [title]=\"parameter.description ? parameter.description : ''\">\r\n\t<div class=\"col-md-3\">\r\n\t\tName: {{parameter.name}}\r\n\t</div>\r\n\t<div class=\"col-md-3\">\r\n\t\tDefault: {{parameter.default}}\r\n\t</div>\r\n\t<div class=\"col-md-4\">\r\n\t\tValue: <input class=\"form-control\" [type]=\"parameter.type\" (focus)=\"onFocus()\" (change)=\"onValueChanged($event)\" [checked]=\"checked\" [value]=\"value\">\r\n\t</div>\r\n\t<div *ngIf=\"active\" class=\"col-md-2\">\r\n\t\t<input type=\"button\" class=\"btn\" value=\"Speichern\" (click)=\"saveParameter()\">\r\n\t\t<input type=\"button\" class=\"btn\" value=\"Abbrechen\" (click)=\"cancelEdit()\">\r\n\t</div>\r\n</div>\r\n"
+module.exports = "<div *ngIf=\"parameter\" [class]=\"getErrorClass()\" [title]=\"parameter.description ? parameter.description : ''\">\r\n\t<div class=\"col-md-3\">\r\n\t\t<cmi-viaduc-highlight [text]=\"parameter.name\" [highlight]=\"searchString\"></cmi-viaduc-highlight>\r\n\t</div>\r\n\t<var class=\"col-md-3\">\r\n\t\t{{parameter.default}}\r\n\t</var>\r\n\t<div class=\"col-md-4\">\r\n\t\t<input [class]=\"getInputClass()\" [type]=\"parameter.type\" (focus)=\"onFocus()\" (change)=\"onValueChanged($event)\" [checked]=\"checked\" [value]=\"value\">\r\n\t</div>\r\n\t<div *ngIf=\"active\" class=\"col-md-2\">\r\n\t\t<input type=\"button\" class=\"btn\" value=\"Speichern\" (click)=\"saveParameter()\">\r\n\t\t<input type=\"button\" class=\"btn\" value=\"Abbrechen\" (click)=\"cancelEdit()\">\r\n\t</div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -723,7 +806,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".parameter-list {\n  border-bottom: 1px solid #ddd;\n  border-top: 1px solid #ddd;\n  margin-left: 5px;\n  margin-right: 5px;\n}\n.parameter-list div .form-control[type='text'] {\n  display: initial;\n  width: calc(100% - 50px);\n}\n.parameter-list div .form-control[type='checkbox'] {\n  display: initial;\n  width: auto;\n}\n.parameter-list div[class*=col-] {\n  margin-top: 1em;\n  margin-bottom: 1em;\n}\n", ""]);
+exports.push([module.i, ".parameter-list {\n  border-bottom: 1px solid #ddd;\n  border-top: 1px solid #ddd;\n  margin-left: 5px;\n  margin-right: 5px;\n}\n.parameter-list div .form-control[type='text'],\n.parameter-list var .form-control[type='text'],\n.parameter-list div .form-control[type='number'],\n.parameter-list var .form-control[type='number'] {\n  display: initial;\n}\n.parameter-list div .form-control[type='checkbox'],\n.parameter-list var .form-control[type='checkbox'] {\n  display: initial;\n  width: auto;\n}\n.parameter-list div .highlighted,\n.parameter-list var .highlighted {\n  background: #ff9;\n  color: #000;\n  text-decoration: none;\n}\n.parameter-list div[class*=col-],\n.parameter-list var[class*=col-] {\n  margin-top: 1em;\n  margin-bottom: 1em;\n}\n", ""]);
 
 // exports
 
@@ -760,8 +843,10 @@ var ParameterComponent = /** @class */ (function () {
     ParameterComponent_1 = ParameterComponent;
     ParameterComponent.prototype.ngOnInit = function () {
         var _this = this;
-        ParameterComponent_1._onFocusChange.subscribe(function () {
-            _this.cancelEdit();
+        ParameterComponent_1._onFocusChange.subscribe(function (name) {
+            if (name !== _this.parameter.name) {
+                _this.cancelEdit();
+            }
         });
         this.validationEvent.subscribe(function () {
             _this.validationError = !_this._isValid();
@@ -781,19 +866,19 @@ var ParameterComponent = /** @class */ (function () {
         }
     };
     ParameterComponent.prototype.onFocus = function () {
-        ParameterComponent_1._onFocusChange.next();
+        ParameterComponent_1._onFocusChange.next(this.parameter.name);
         this.active = true;
     };
     ParameterComponent.prototype.saveParameter = function () {
         var _this = this;
-        if (this.parameter.type === 'checkbox') {
-            this.parameter.value = this.checked.toString();
-        }
-        else {
-            this.parameter.value = this.value;
-        }
-        this.validationError = !this._isValid();
-        if (!this.validationError) {
+        this.validationError = !this._validateString(this.value);
+        if (this.validationError === false) {
+            if (this.parameter.type === 'checkbox') {
+                this.parameter.value = this.checked.toString();
+            }
+            else {
+                this.parameter.value = this.value;
+            }
             this._paramService.saveParameter(this.parameter).then(function (success) { return _this.validationError = !success; });
         }
     };
@@ -808,16 +893,30 @@ var ParameterComponent = /** @class */ (function () {
         this.active = false;
     };
     ParameterComponent.prototype._isValid = function () {
-        if (this.parameter && this.parameter.regexValidation && this.parameter.value) {
-            var matches = this.parameter.value.match(this.parameter.regexValidation);
-            return !!(matches && matches[0] !== null);
+        return this._validateString(this.parameter.value);
+    };
+    ParameterComponent.prototype._validateString = function (value) {
+        if (!value && this.parameter.mandatory === true) {
+            return false;
+        }
+        if (this.parameter && this.parameter.regexValidation && value) {
+            var matches = value.match(this.parameter.regexValidation);
+            return (matches && matches[0] !== null);
         }
         else {
             return true;
         }
     };
-    ParameterComponent.prototype.getClass = function () {
+    ParameterComponent.prototype.getErrorClass = function () {
         return this.validationError ? 'parameter-list row alert-danger' : 'parameter-list row';
+    };
+    ParameterComponent.prototype.getInputClass = function () {
+        if (this.value && this.searchString) {
+            if (this.value.toLowerCase().indexOf(this.searchString.toLowerCase()) !== -1) {
+                return 'form-control highlighted';
+            }
+        }
+        return 'form-control';
     };
     ParameterComponent._onFocusChange = new Subject_1.Subject();
     __decorate([
@@ -828,6 +927,10 @@ var ParameterComponent = /** @class */ (function () {
         core_1.Input(),
         __metadata("design:type", core_1.EventEmitter)
     ], ParameterComponent.prototype, "validationEvent", void 0);
+    __decorate([
+        core_1.Input(),
+        __metadata("design:type", String)
+    ], ParameterComponent.prototype, "searchString", void 0);
     ParameterComponent = ParameterComponent_1 = __decorate([
         core_1.Component({
             selector: 'cmi-viaduc-parameter',
@@ -847,7 +950,7 @@ exports.ParameterComponent = ParameterComponent;
 /***/ "../../../../../src/app/parameterManager/parameterList/parameterList.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div *ngIf=\"!loading\">\r\n\t<h1>Zentralisierte Parameterverwaltung</h1>\r\n\t<div [class]=\"getClass\">\r\n\t\tDer Parameter wurde erfolgreich gespeichert.\r\n\t</div>\r\n\t<div class=\"row\">\r\n\t\t<div class=\"col-md-4\">\r\n\t\t\t<input type=\"text\" class=\"form-control\" [value]=\"searchString\" (change)=\"onValueChanged($event)\"/>\r\n\t\t</div>\r\n\t\t<div class=\"col-md-1\">\r\n\t\t\t<input type=\"button\" (click)=\"searchParam()\" value=\"Suchen\" class=\"btn\"/>\r\n\t\t</div>\r\n\t</div>\r\n\t<input type=\"button\" (click)=\"emitValidationEvent()\" value=\"Validieren\" class=\"btn\"/>\r\n\t<div *ngFor=\"let param of filteredParameters\">\r\n\t\t<cmi-viaduc-parameter [parameter]=\"param\" [validationEvent]=\"validationEvent\"></cmi-viaduc-parameter>\r\n\t</div>\r\n</div>\r\n<div *ngIf=\"loading\">\r\n\t<cmi-blocker class=\"cmi-visible cmi-fixed cmi-center cmi-shadow\">\r\n\t\t<cmi-spinner></cmi-spinner>\r\n\t</cmi-blocker>\r\n</div>\r\n"
+module.exports = "<div *ngIf=\"!loading\">\r\n\t<h1>Zentralisierte Parameterverwaltung</h1>\r\n\t<div class=\"row\">\r\n\t\t<div class=\"col-md-4\">\r\n\t\t\t<input type=\"text\" class=\"form-control\" [value]=\"searchString\" (change)=\"onValueChanged($event)\"/>\r\n\t\t</div>\r\n\t\t<div class=\"col-md-1\">\r\n\t\t\t<input type=\"button\" (click)=\"searchParam()\" value=\"Suchen\" class=\"btn\"/>\r\n\t\t</div>\r\n\t\t<div class=\"col-md-6\">\r\n\r\n\t\t</div>\r\n\t\t<div class=\"col-md-1\">\r\n\t\t\t<input type=\"button\" (click)=\"emitValidationEvent()\" value=\"Validieren\" class=\"btn\"/>\r\n\t\t</div>\r\n\t</div>\r\n\t<div class=\"row\">\r\n\t\t<b class=\"col-md-3\">Name</b>\r\n\t\t<b class=\"col-md-3\">Standardwert</b>\r\n\t\t<b class=\"col-md-4\">Wert</b>\r\n\t</div>\r\n\t<div *ngFor=\"let param of filteredParameters\">\r\n\t\t<cmi-viaduc-parameter [searchString]=\"searchedStringUpToDate ? searchString : ''\" [parameter]=\"param\" [validationEvent]=\"validationEvent\"></cmi-viaduc-parameter>\r\n\t</div>\r\n</div>\r\n<div *ngIf=\"loading\">\r\n\t<cmi-blocker class=\"cmi-visible cmi-fixed cmi-center cmi-shadow\">\r\n\t\t<cmi-spinner></cmi-spinner>\r\n\t</cmi-blocker>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -859,7 +962,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".btn {\n  margin-bottom: 1em;\n}\n.no-display {\n  display: none;\n}\n.row .col-md-1 {\n  padding: 0;\n}\n.row .col-md-4 {\n  padding-right: 0;\n}\ncmi-blocker cmi-spinner {\n  width: 50%;\n  height: 50%;\n  overflow: auto;\n  margin: auto;\n  position: fixed;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  top: 40%;\n}\n", ""]);
+exports.push([module.i, ".btn {\n  margin-bottom: 1em;\n}\n.no-display {\n  display: none;\n}\n.row {\n  margin: 0;\n}\n.row .col-md-1 {\n  padding: 0;\n}\n.row .col-md-4 {\n  padding-right: 0;\n}\ncmi-blocker cmi-spinner {\n  width: 50%;\n  height: 50%;\n  overflow: auto;\n  margin: auto;\n  position: fixed;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  top: 40%;\n}\n", ""]);
 
 // exports
 
@@ -946,28 +1049,20 @@ var ParameterListComponent = /** @class */ (function () {
     };
     ParameterListComponent.prototype.onValueChanged = function (event) {
         this.searchString = event.target.value;
+        if (this.searchString) {
+            this.searchedStringUpToDate = false;
+        }
     };
     ParameterListComponent.prototype.emitValidationEvent = function () {
         this.validationEvent.emit();
     };
-    ParameterListComponent.prototype.getClass = function () {
-        if (this.savedSuccessfull === true) {
-            return 'alert alert-success fade in';
-        }
-        else if (this.savedSuccessfull === false) {
-            return 'alert alert-danger fade in';
-        }
-        else {
-            return 'no-display';
-        }
-    };
     ParameterListComponent.prototype.searchParam = function () {
         var _this = this;
         this.filteredParameters = [];
+        this.searchedStringUpToDate = true;
         if (this.searchString !== '') {
-            console.log('search string found!');
             this.filteredParameters = this._allParameters.filter(function (param) {
-                return param.name.toLowerCase().indexOf(_this.searchString.toLowerCase()) !== -1 || param.value.toLowerCase().indexOf(_this.searchString.toLowerCase()) !== -1;
+                return param.name.toLowerCase().indexOf(_this.searchString.toLowerCase()) !== -1 || param.value && param.value.toLowerCase().indexOf(_this.searchString.toLowerCase()) !== -1;
             });
         }
         else {

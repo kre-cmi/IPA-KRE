@@ -69,7 +69,7 @@
     <Compile Include="Attributes\DescriptionAttribute.cs" />
     <Compile Include="BusConfigurator.cs" />
     <Compile Include="Attributes\MandatoryAttribute.cs" />
-    <Compile Include="IParameter.cs" />
+    <Compile Include="ISetting.cs" />
     <Compile Include="Parameter.cs" />
     <Compile Include="GetParameter\GetParameterEvent.cs" />
     <Compile Include="GetParameter\GetParameterEventResponse.cs" />
