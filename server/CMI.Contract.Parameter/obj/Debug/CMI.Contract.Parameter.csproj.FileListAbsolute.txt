@@ -17,7 +17,7 @@ C:\Developement\IPA-KRE\server\CMI.Contract.Parameter\bin\Debug\NewId.xml
 C:\Developement\IPA-KRE\server\CMI.Contract.Parameter\bin\Debug\Newtonsoft.Json.xml
 C:\Developement\IPA-KRE\server\CMI.Contract.Parameter\bin\Debug\Newtonsoft.Json.Bson.xml
 C:\Developement\IPA-KRE\server\CMI.Contract.Parameter\bin\Debug\RabbitMQ.Client.xml
-C:\Developement\IPA-KRE\server\CMI.Contract.Parameter\obj\Debug\CMI.Contract.Parameter.csprojResolveAssemblyReference.cache
 C:\Developement\IPA-KRE\server\CMI.Contract.Parameter\obj\Debug\CMI.Contract.Parameter.csproj.CoreCompileInputs.cache
 C:\Developement\IPA-KRE\server\CMI.Contract.Parameter\obj\Debug\CMI.Contract.Parameter.dll
 C:\Developement\IPA-KRE\server\CMI.Contract.Parameter\obj\Debug\CMI.Contract.Parameter.pdb
+C:\Developement\IPA-KRE\server\CMI.Contract.Parameter\obj\Debug\CMI.Contract.Parameter.csprojResolveAssemblyReference.cache

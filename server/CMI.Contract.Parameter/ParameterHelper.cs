@@ -12,10 +12,10 @@ namespace CMI.Contract.Parameter
         public static Parameter[] GetParameterListFromSetting(ISetting setting)
         {
             var paramList = new List<Parameter>();
-            var nameSufix = setting.GetType().Namespace;
+            var namePrefix = setting.GetType().Namespace;
             foreach (var fieldInfo in setting.GetType().GetFields())
             {
-                var param = CreateParameter(fieldInfo, setting, nameSufix);
+                var param = CreateParameter(fieldInfo, setting, namePrefix);
                 if (param.Name != null)
                 {
                     paramList.Add(param);
@@ -30,10 +30,13 @@ namespace CMI.Contract.Parameter
 
         public static bool ValidateParameter(Parameter parameter)
         {
-            if (parameter.RegexValidation == null) return true;
-            if (parameter.Value == null)
+            if (string.IsNullOrEmpty(parameter.Value) && parameter.Mandatory)
             {
-                return !parameter.Mandatory;
+                return false;
+            }
+            if (parameter.RegexValidation == null || parameter.Value == null)
+            {
+                return true;
             }
 
             var regex = new Regex(parameter.RegexValidation);
@@ -41,6 +44,7 @@ namespace CMI.Contract.Parameter
             var match = regex.IsMatch(parameter.Value);
             return match;
         }
+
         public static bool ValidateParameter(Parameter[] parameters)
         {
             return parameters.All(ValidateParameter);
@@ -48,17 +52,19 @@ namespace CMI.Contract.Parameter
 
         public static bool SaveSetting(ISetting setting, Parameter[] parameters)
         {
-            if (!ValidateParameter(parameters)) return false;
-
             var path = GetSettingPath(setting);
             var jsonString = string.Empty;
 
             if (parameters == null)
             {
+                if (!ValidateParameter(GetParameterListFromSetting(setting))) return false;
+
                 jsonString = GetJsonStringOfSetting(setting);
             }
             if (parameters != null)
             {
+                if (!ValidateParameter(parameters)) return false;
+
                 jsonString = Newtonsoft.Json.JsonConvert.SerializeObject(parameters);
             }
             try
