@@ -7,7 +7,7 @@ namespace CMI.Contract.Parameter.Tests
     public class ParameterValidationTests
     {
         [TestMethod]
-        public void ParameterList_Should_be_valid()
+        public void ParameterList_is_valid()
         {
             var testSetting = new TestSetting
             {
@@ -22,7 +22,7 @@ namespace CMI.Contract.Parameter.Tests
         }
 
         [TestMethod]
-        public void Empty_value_and_mandatory_should_not_be_valid()
+        public void Empty_value_and_mandatory_is_not_valid()
         {
             var testSetting = new TestSetting();
             var parameterList = ParameterHelper.GetParameterListFromSetting(testSetting);
@@ -30,7 +30,7 @@ namespace CMI.Contract.Parameter.Tests
         }
 
         [TestMethod]
-        public void None_empty_value_and_mandatory_should_be_valid()
+        public void None_empty_value_and_mandatory_is_valid()
         {
             var testSetting = new TestSetting();
             testSetting.TestMandatory = "Test";
@@ -39,7 +39,7 @@ namespace CMI.Contract.Parameter.Tests
         }
 
         [TestMethod]
-        public void None_empty_value_that_is_not_conform_should_not_be_valide()
+        public void None_empty_value_that_is_not_conform_is_not_valide()
         {
             var testSetting = new TestSetting();
             testSetting.TestDate = "This is no Date!";
@@ -48,7 +48,7 @@ namespace CMI.Contract.Parameter.Tests
         }
 
         [TestMethod]
-        public void None_empty_value_that_is_conform_should_be_valide()
+        public void None_empty_value_that_is_conform_is_valide()
         {
             var testSetting = new TestSetting();
             testSetting.TestDate = "03.04.2018";
@@ -57,7 +57,7 @@ namespace CMI.Contract.Parameter.Tests
         }
 
         [TestMethod]
-        public void Empty_value_that_is_mandatory_and_has_a_regex_defined_should_not_be_valide()
+        public void Empty_mandatory_value_with_regex_defined_is_not_valide()
         {
             var testSetting = new TestSetting();
             var parameterList = ParameterHelper.GetParameterListFromSetting(testSetting);
@@ -65,7 +65,7 @@ namespace CMI.Contract.Parameter.Tests
         }
 
         [TestMethod]
-        public void None_empty_conform_value_that_is_mandatory_and_has_a_regex_defined_should_be_valide()
+        public void None_empty_mandatory_conform_value_with_regex_defined_is_valide()
         {
             var testSetting = new TestSetting();
             testSetting.TestMailAdress = "max.muster@supermail.ch";
@@ -74,7 +74,7 @@ namespace CMI.Contract.Parameter.Tests
         }
 
         [TestMethod]
-        public void None_empty_none_conform_value_that_is_mandatory_and_has_a_regex_defined_should_not_be_valide()
+        public void None_empty_unconform_mandatory_value_with_regex_defined_is_not_valide()
         {
             var testSetting = new TestSetting();
             testSetting.TestMailAdress = "This is not a mail adress!";

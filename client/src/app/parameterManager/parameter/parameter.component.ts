@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit} from '@angular/core';
 import {Parameter} from '../parameterEntity';
-import {ParameterService} from '../../Services/parameterService';
+import {ParameterService} from '../../services/parameterService';
 import {Subject} from 'rxjs/Subject';
 
 @Component({
@@ -32,7 +32,12 @@ export class ParameterComponent implements OnInit {
 			}
 		});
 		this.validationEvent.subscribe(() => {
-			this.validationError = !this._isValid();
+			if (this.value) {
+				this.validationError = !this._validateString(this.value);
+			} else {
+				this.validationError = !this._isValid();
+			}
+
 		});
 		this.value = this.parameter.value;
 		this.checked = this.parameter.value === 'True';

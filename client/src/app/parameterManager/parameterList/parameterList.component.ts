@@ -1,5 +1,5 @@
 import {Component, EventEmitter} from '@angular/core';
-import { ParameterService} from '../../Services/parameterService';
+import { ParameterService} from '../../services/parameterService';
 import {Parameter} from '../parameterEntity';
 
 @Component({
