@@ -1,8 +1,11 @@
+C:\Developement\IPA-KRE\server\CMI.Host.ExampleServiceB\obj\Debug\CMI.Host.ExampleServiceB.csproj.CoreCompileInputs.cache
+C:\Developement\IPA-KRE\server\CMI.Host.ExampleServiceB\obj\Debug\CMI.Host.ExampleServiceB.csprojResolveAssemblyReference.cache
 C:\Developement\IPA-KRE\server\CMI.Host.ExampleServiceB\bin\Debug\CMI.Host.ExampleServiceB.exe.config
 C:\Developement\IPA-KRE\server\CMI.Host.ExampleServiceB\bin\Debug\CMI.Host.ExampleServiceB.exe
 C:\Developement\IPA-KRE\server\CMI.Host.ExampleServiceB\bin\Debug\CMI.Host.ExampleServiceB.pdb
 C:\Developement\IPA-KRE\server\CMI.Host.ExampleServiceB\bin\Debug\CMI.Manager.ExampleServiceB.dll
 C:\Developement\IPA-KRE\server\CMI.Host.ExampleServiceB\bin\Debug\GreenPipes.dll
+C:\Developement\IPA-KRE\server\CMI.Host.ExampleServiceB\bin\Debug\Magnum.dll
 C:\Developement\IPA-KRE\server\CMI.Host.ExampleServiceB\bin\Debug\MassTransit.dll
 C:\Developement\IPA-KRE\server\CMI.Host.ExampleServiceB\bin\Debug\MassTransit.RabbitMqTransport.dll
 C:\Developement\IPA-KRE\server\CMI.Host.ExampleServiceB\bin\Debug\Microsoft.Diagnostics.Tracing.EventSource.dll
@@ -15,6 +18,7 @@ C:\Developement\IPA-KRE\server\CMI.Host.ExampleServiceB\bin\Debug\CMI.Contract.P
 C:\Developement\IPA-KRE\server\CMI.Host.ExampleServiceB\bin\Debug\CMI.Manager.ExampleServiceB.pdb
 C:\Developement\IPA-KRE\server\CMI.Host.ExampleServiceB\bin\Debug\CMI.Manager.ExampleServiceB.dll.config
 C:\Developement\IPA-KRE\server\CMI.Host.ExampleServiceB\bin\Debug\GreenPipes.xml
+C:\Developement\IPA-KRE\server\CMI.Host.ExampleServiceB\bin\Debug\Magnum.xml
 C:\Developement\IPA-KRE\server\CMI.Host.ExampleServiceB\bin\Debug\MassTransit.xml
 C:\Developement\IPA-KRE\server\CMI.Host.ExampleServiceB\bin\Debug\MassTransit.RabbitMqTransport.xml
 C:\Developement\IPA-KRE\server\CMI.Host.ExampleServiceB\bin\Debug\Microsoft.Diagnostics.Tracing.EventSource.xml
@@ -25,7 +29,5 @@ C:\Developement\IPA-KRE\server\CMI.Host.ExampleServiceB\bin\Debug\RabbitMQ.Clien
 C:\Developement\IPA-KRE\server\CMI.Host.ExampleServiceB\bin\Debug\Topshelf.xml
 C:\Developement\IPA-KRE\server\CMI.Host.ExampleServiceB\bin\Debug\CMI.Contract.Parameter.pdb
 C:\Developement\IPA-KRE\server\CMI.Host.ExampleServiceB\bin\Debug\CMI.Contract.Parameter.dll.config
-C:\Developement\IPA-KRE\server\CMI.Host.ExampleServiceB\obj\Debug\CMI.Host.ExampleServiceB.csprojResolveAssemblyReference.cache
-C:\Developement\IPA-KRE\server\CMI.Host.ExampleServiceB\obj\Debug\CMI.Host.ExampleServiceB.csproj.CoreCompileInputs.cache
 C:\Developement\IPA-KRE\server\CMI.Host.ExampleServiceB\obj\Debug\CMI.Host.ExampleServiceB.exe
 C:\Developement\IPA-KRE\server\CMI.Host.ExampleServiceB\obj\Debug\CMI.Host.ExampleServiceB.pdb

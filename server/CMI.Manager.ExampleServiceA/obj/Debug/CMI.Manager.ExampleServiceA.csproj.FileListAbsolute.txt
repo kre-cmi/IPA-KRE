@@ -1,8 +1,11 @@
+C:\Developement\IPA-KRE\server\CMI.Manager.ExampleServiceA\obj\Debug\CMI.Manager.ExampleServiceA.csprojResolveAssemblyReference.cache
+C:\Developement\IPA-KRE\server\CMI.Manager.ExampleServiceA\obj\Debug\CMI.Manager.ExampleServiceA.csproj.CoreCompileInputs.cache
 C:\Developement\IPA-KRE\server\CMI.Manager.ExampleServiceA\bin\Debug\CMI.Manager.ExampleServiceA.dll.config
 C:\Developement\IPA-KRE\server\CMI.Manager.ExampleServiceA\bin\Debug\CMI.Manager.ExampleServiceA.dll
 C:\Developement\IPA-KRE\server\CMI.Manager.ExampleServiceA\bin\Debug\CMI.Manager.ExampleServiceA.pdb
 C:\Developement\IPA-KRE\server\CMI.Manager.ExampleServiceA\bin\Debug\CMI.Contract.Parameter.dll
 C:\Developement\IPA-KRE\server\CMI.Manager.ExampleServiceA\bin\Debug\GreenPipes.dll
+C:\Developement\IPA-KRE\server\CMI.Manager.ExampleServiceA\bin\Debug\Magnum.dll
 C:\Developement\IPA-KRE\server\CMI.Manager.ExampleServiceA\bin\Debug\MassTransit.dll
 C:\Developement\IPA-KRE\server\CMI.Manager.ExampleServiceA\bin\Debug\MassTransit.RabbitMqTransport.dll
 C:\Developement\IPA-KRE\server\CMI.Manager.ExampleServiceA\bin\Debug\Microsoft.Diagnostics.Tracing.EventSource.dll
@@ -13,6 +16,7 @@ C:\Developement\IPA-KRE\server\CMI.Manager.ExampleServiceA\bin\Debug\RabbitMQ.Cl
 C:\Developement\IPA-KRE\server\CMI.Manager.ExampleServiceA\bin\Debug\CMI.Contract.Parameter.pdb
 C:\Developement\IPA-KRE\server\CMI.Manager.ExampleServiceA\bin\Debug\CMI.Contract.Parameter.dll.config
 C:\Developement\IPA-KRE\server\CMI.Manager.ExampleServiceA\bin\Debug\GreenPipes.xml
+C:\Developement\IPA-KRE\server\CMI.Manager.ExampleServiceA\bin\Debug\Magnum.xml
 C:\Developement\IPA-KRE\server\CMI.Manager.ExampleServiceA\bin\Debug\MassTransit.xml
 C:\Developement\IPA-KRE\server\CMI.Manager.ExampleServiceA\bin\Debug\MassTransit.RabbitMqTransport.xml
 C:\Developement\IPA-KRE\server\CMI.Manager.ExampleServiceA\bin\Debug\Microsoft.Diagnostics.Tracing.EventSource.xml
@@ -20,7 +24,5 @@ C:\Developement\IPA-KRE\server\CMI.Manager.ExampleServiceA\bin\Debug\NewId.xml
 C:\Developement\IPA-KRE\server\CMI.Manager.ExampleServiceA\bin\Debug\Newtonsoft.Json.xml
 C:\Developement\IPA-KRE\server\CMI.Manager.ExampleServiceA\bin\Debug\Newtonsoft.Json.Bson.xml
 C:\Developement\IPA-KRE\server\CMI.Manager.ExampleServiceA\bin\Debug\RabbitMQ.Client.xml
-C:\Developement\IPA-KRE\server\CMI.Manager.ExampleServiceA\obj\Debug\CMI.Manager.ExampleServiceA.csprojResolveAssemblyReference.cache
-C:\Developement\IPA-KRE\server\CMI.Manager.ExampleServiceA\obj\Debug\CMI.Manager.ExampleServiceA.csproj.CoreCompileInputs.cache
 C:\Developement\IPA-KRE\server\CMI.Manager.ExampleServiceA\obj\Debug\CMI.Manager.ExampleServiceA.dll
 C:\Developement\IPA-KRE\server\CMI.Manager.ExampleServiceA\obj\Debug\CMI.Manager.ExampleServiceA.pdb
